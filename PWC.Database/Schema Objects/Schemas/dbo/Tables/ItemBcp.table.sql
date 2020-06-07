@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[ItemBcp] (
+    [ITEM_NUMBER]      NVARCHAR (255) NULL,
+    [ITEM_DESCRIPTION] NVARCHAR (255) NULL
+);
+

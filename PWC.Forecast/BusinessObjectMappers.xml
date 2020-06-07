@@ -1,0 +1,683 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<BusinessObjectMappers>
+  <MapperClasses>
+    <Mapper Type="WsRecord" MapperClassName="DVu.Library.PersistenceLayer.WsRecordMapper, DVu.Library.PersistenceLayer" />
+    <Mapper Type="WsSet" MapperClassName="DVu.Library.PersistenceLayer.WsSetMapper, DVu.Library.PersistenceLayer" />
+    <Mapper Type="RdbRecord" MapperClassName="DVu.Library.PersistenceLayer.RdbRecordMapper, DVu.Library.PersistenceLayer" />
+    <Mapper Type="RdbSet" MapperClassName="DVu.Library.PersistenceLayer.RdbSetMapper, DVu.Library.PersistenceLayer" />
+  </MapperClasses>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.CustomerWs">
+    <ObjectMapper Type="WsRecord">
+      <MethodMapper Type="Select" ProxyClassName="PWCWebService.PWCWebServiceClient,PWC.Forecast" MethodName="CustomerSelect" />
+      <MethodMapper Type="Insert" ProxyClassName="PWCWebService.PWCWebServiceClient,PWC.Forecast" MethodName="CustomerInsert" />
+      <MethodMapper Type="Update" ProxyClassName="PWCWebService.PWCWebServiceClient,PWC.Forecast" MethodName="CustomerUpdate" />
+      <MethodMapper Type="Delete" ProxyClassName="PWCWebService.PWCWebServiceClient,PWC.Forecast" MethodName="CustomerDelete" />
+      <CallbackMapper Type="Select" CallbackClassName="PWC.Forecast.frmCustomer,PWC.Forecast" CallbackPropertyName="WSProxyCallBack" />
+      <CallbackMapper Type="Insert" CallbackClassName="PWC.Forecast.frmCustomer,PWC.Forecast" CallbackPropertyName="WSProxyCallBack" />
+      <CallbackMapper Type="Update" CallbackClassName="PWC.Forecast.frmCustomer,PWC.Forecast" CallbackPropertyName="WSProxyCallBack" />
+      <CallbackMapper Type="Delete" CallbackClassName="PWC.Forecast.frmCustomer,PWC.Forecast" CallbackPropertyName="WSProxyCallBack" />
+      <!--FieldMapper ObjectFieldName="CompanyCodeKey" PersistenceFieldName="CompanyCodeKey" />
+			<FieldMapper ObjectFieldName="CustomerNumberKey" PersistenceFieldName="CustomerNumberKey" />
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="CompanyCode" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="CustomerNumber" />
+			<FieldMapper ObjectFieldName="CustomerName" PersistenceFieldName="CustomerName" />
+			<FieldMapper ObjectFieldName="DistinctForecastNameFlag" PersistenceFieldName="DistinctForecastNameFlag" />
+			<FieldMapper ObjectFieldName="ForecastMethod" PersistenceFieldName="ForecastMethod" />
+			<FieldMapper ObjectFieldName="InflateFactor" PersistenceFieldName="InflateFactor" />
+			<FieldMapper ObjectFieldName="ForecastFutureFrozenMonths" PersistenceFieldName="ForecastFutureFrozenMonths" />
+			<FieldMapper ObjectFieldName="Status" PersistenceFieldName="status" /-->
+    </ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.CustomerWs+WithCompanyParentCollection">
+    <ObjectMapper Type="WsSet">
+      <MethodMapper Type="Select" ProxyClassName="PWCWebService.PWCWebServiceClient,PWC.Forecast" MethodName="CustomerCollectionSelect" />
+      <CallbackMapper Type="Select" CallbackClassName="PWC.Forecast.frmCustomer,PWC.Forecast" CallbackPropertyName="WSProxyCallBack" />
+      <!--FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="CompanyCode" /-->
+    </ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.Company">
+		<ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="Company">
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CompanyName" PersistenceFieldName="company_name" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ProductGroup">
+		<ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="ProductGroup">
+			<FieldMapper ObjectFieldName="ProductGroupCode" PersistenceFieldName="product_group_code" />
+			<FieldMapper ObjectFieldName="ProductGroupDescription" PersistenceFieldName="product_group_description" />
+      <FieldMapper ObjectFieldName="RowVersion" PersistenceFieldName="timestamp" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.Customer">
+		<ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="Customer">
+      <FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+			<FieldMapper ObjectFieldName="CustomerName" PersistenceFieldName="customer_name" />
+			<FieldMapper ObjectFieldName="DistinctForecastNameFlag" PersistenceFieldName="distinct_forecast_name_flag" />
+			<FieldMapper ObjectFieldName="ForecastMethod" PersistenceFieldName="forecast_method" />
+			<FieldMapper ObjectFieldName="InflateFactor" PersistenceFieldName="inflate_factor" />
+			<FieldMapper ObjectFieldName="ForecastFutureFrozenMonths" PersistenceFieldName="forecast_future_frozen_months" />
+      <FieldMapper ObjectFieldName="RowVersion" PersistenceFieldName="timestamp" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.Item">
+    <ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="Item">
+			<FieldMapper ObjectFieldName="ItemNumber" PersistenceFieldName="item_number" />
+			<FieldMapper ObjectFieldName="ItemDescription" PersistenceFieldName="item_description" />
+			<FieldMapper ObjectFieldName="ProductGroupCode" PersistenceFieldName="product_group_code" />
+      <FieldMapper ObjectFieldName="RowVersion" PersistenceFieldName="timestamp" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.Brand">
+    <ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="Brand">
+			<FieldMapper ObjectFieldName="BrandCode" PersistenceFieldName="brand_code" />
+			<FieldMapper ObjectFieldName="BrandDescription" PersistenceFieldName="brand_description" />
+      <FieldMapper ObjectFieldName="RowVersion" PersistenceFieldName="timestamp" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ProductCategory">
+    <ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="ProductCategory">
+			<FieldMapper ObjectFieldName="ProductCategoryCode" PersistenceFieldName="product_category_code" />
+			<FieldMapper ObjectFieldName="ProductCategoryDescription" PersistenceFieldName="product_category_description" />
+      <FieldMapper ObjectFieldName="RowVersion" PersistenceFieldName="timestamp" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastParameter">
+    <ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastParameter">
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+			<FieldMapper ObjectFieldName="ItemNumber" PersistenceFieldName="item_number" />
+			<FieldMapper ObjectFieldName="StoreCountExisting" PersistenceFieldName="store_count_existing" />
+			<FieldMapper ObjectFieldName="StoreCountNew" PersistenceFieldName="store_count_new" />
+			<FieldMapper ObjectFieldName="InitialQtyPerNewStore" PersistenceFieldName="initial_qty_per_new_store" />
+			<FieldMapper ObjectFieldName="PipelineStart" PersistenceFieldName="pipeline_start" />
+			<FieldMapper ObjectFieldName="PipelineEnd" PersistenceFieldName="pipeline_end" />
+			<FieldMapper ObjectFieldName="ProjectedSalesRateExisting" PersistenceFieldName="projected_sales_rate_existing" />
+			<FieldMapper ObjectFieldName="ProjectedSalesRateNew" PersistenceFieldName="projected_sales_rate_new" />
+			<FieldMapper ObjectFieldName="OneTimeItemFlag" PersistenceFieldName="one_time_item_flag" />
+			<FieldMapper ObjectFieldName="PlPctPY01" PersistenceFieldName="pl_pct_py_01" />
+			<FieldMapper ObjectFieldName="PlPctPY02" PersistenceFieldName="pl_pct_py_02" />
+			<FieldMapper ObjectFieldName="PlPctPY03" PersistenceFieldName="pl_pct_py_03" />
+			<FieldMapper ObjectFieldName="PlPctPY04" PersistenceFieldName="pl_pct_py_04" />
+			<FieldMapper ObjectFieldName="PlPctPY05" PersistenceFieldName="pl_pct_py_05" />
+			<FieldMapper ObjectFieldName="PlPctPY06" PersistenceFieldName="pl_pct_py_06" />
+			<FieldMapper ObjectFieldName="PlPctPY07" PersistenceFieldName="pl_pct_py_07" />
+			<FieldMapper ObjectFieldName="PlPctPY08" PersistenceFieldName="pl_pct_py_08" />
+			<FieldMapper ObjectFieldName="PlPctPY09" PersistenceFieldName="pl_pct_py_09" />
+			<FieldMapper ObjectFieldName="PlPctPY10" PersistenceFieldName="pl_pct_py_10" />
+			<FieldMapper ObjectFieldName="PlPctPY11" PersistenceFieldName="pl_pct_py_11" />
+			<FieldMapper ObjectFieldName="PlPctPY12" PersistenceFieldName="pl_pct_py_12" />
+			<FieldMapper ObjectFieldName="PlPctCY01" PersistenceFieldName="pl_pct_cy_01" />
+			<FieldMapper ObjectFieldName="PlPctCY02" PersistenceFieldName="pl_pct_cy_02" />
+			<FieldMapper ObjectFieldName="PlPctCY03" PersistenceFieldName="pl_pct_cy_03" />
+			<FieldMapper ObjectFieldName="PlPctCY04" PersistenceFieldName="pl_pct_cy_04" />
+			<FieldMapper ObjectFieldName="PlPctCY05" PersistenceFieldName="pl_pct_cy_05" />
+			<FieldMapper ObjectFieldName="PlPctCY06" PersistenceFieldName="pl_pct_cy_06" />
+			<FieldMapper ObjectFieldName="PlPctCY07" PersistenceFieldName="pl_pct_cy_07" />
+			<FieldMapper ObjectFieldName="PlPctCY08" PersistenceFieldName="pl_pct_cy_08" />
+			<FieldMapper ObjectFieldName="PlPctCY09" PersistenceFieldName="pl_pct_cy_09" />
+			<FieldMapper ObjectFieldName="PlPctCY10" PersistenceFieldName="pl_pct_cy_10" />
+			<FieldMapper ObjectFieldName="PlPctCY11" PersistenceFieldName="pl_pct_cy_11" />
+			<FieldMapper ObjectFieldName="PlPctCY12" PersistenceFieldName="pl_pct_cy_12" />
+			<FieldMapper ObjectFieldName="PlPctNY01" PersistenceFieldName="pl_pct_ny_01" />
+			<FieldMapper ObjectFieldName="PlPctNY02" PersistenceFieldName="pl_pct_ny_02" />
+			<FieldMapper ObjectFieldName="PlPctNY03" PersistenceFieldName="pl_pct_ny_03" />
+			<FieldMapper ObjectFieldName="PlPctNY04" PersistenceFieldName="pl_pct_ny_04" />
+			<FieldMapper ObjectFieldName="PlPctNY05" PersistenceFieldName="pl_pct_ny_05" />
+			<FieldMapper ObjectFieldName="PlPctNY06" PersistenceFieldName="pl_pct_ny_06" />
+			<FieldMapper ObjectFieldName="PlPctNY07" PersistenceFieldName="pl_pct_ny_07" />
+			<FieldMapper ObjectFieldName="PlPctNY08" PersistenceFieldName="pl_pct_ny_08" />
+			<FieldMapper ObjectFieldName="PlPctNY09" PersistenceFieldName="pl_pct_ny_09" />
+			<FieldMapper ObjectFieldName="PlPctNY10" PersistenceFieldName="pl_pct_ny_10" />
+			<FieldMapper ObjectFieldName="PlPctNY11" PersistenceFieldName="pl_pct_ny_11" />
+			<FieldMapper ObjectFieldName="PlPctNY12" PersistenceFieldName="pl_pct_ny_12" />
+      <FieldMapper ObjectFieldName="RowVersion" PersistenceFieldName="timestamp" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.Forecast">
+    <ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="Forecast">
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+			<FieldMapper ObjectFieldName="POSSalesEndDate" PersistenceFieldName="pos_sales_end_date" />
+			<FieldMapper ObjectFieldName="ItemNumber" PersistenceFieldName="item_number" />
+			<FieldMapper ObjectFieldName="ForecastMethod" PersistenceFieldName="forecast_method" />
+			<FieldMapper ObjectFieldName="CreatedDate" PersistenceFieldName="created_date" />
+			<FieldMapper ObjectFieldName="PY01" PersistenceFieldName="py_01" />
+			<FieldMapper ObjectFieldName="PY02" PersistenceFieldName="py_02" />
+			<FieldMapper ObjectFieldName="PY03" PersistenceFieldName="py_03" />
+			<FieldMapper ObjectFieldName="PY04" PersistenceFieldName="py_04" />
+			<FieldMapper ObjectFieldName="PY05" PersistenceFieldName="py_05" />
+			<FieldMapper ObjectFieldName="PY06" PersistenceFieldName="py_06" />
+			<FieldMapper ObjectFieldName="PY07" PersistenceFieldName="py_07" />
+			<FieldMapper ObjectFieldName="PY08" PersistenceFieldName="py_08" />
+			<FieldMapper ObjectFieldName="PY09" PersistenceFieldName="py_09" />
+			<FieldMapper ObjectFieldName="PY10" PersistenceFieldName="py_10" />
+			<FieldMapper ObjectFieldName="PY11" PersistenceFieldName="py_11" />
+			<FieldMapper ObjectFieldName="PY12" PersistenceFieldName="py_12" />
+			<FieldMapper ObjectFieldName="CY01" PersistenceFieldName="cy_01" />
+			<FieldMapper ObjectFieldName="CY02" PersistenceFieldName="cy_02" />
+			<FieldMapper ObjectFieldName="CY03" PersistenceFieldName="cy_03" />
+			<FieldMapper ObjectFieldName="CY04" PersistenceFieldName="cy_04" />
+			<FieldMapper ObjectFieldName="CY05" PersistenceFieldName="cy_05" />
+			<FieldMapper ObjectFieldName="CY06" PersistenceFieldName="cy_06" />
+			<FieldMapper ObjectFieldName="CY07" PersistenceFieldName="cy_07" />
+			<FieldMapper ObjectFieldName="CY08" PersistenceFieldName="cy_08" />
+			<FieldMapper ObjectFieldName="CY09" PersistenceFieldName="cy_09" />
+			<FieldMapper ObjectFieldName="CY10" PersistenceFieldName="cy_10" />
+			<FieldMapper ObjectFieldName="CY11" PersistenceFieldName="cy_11" />
+			<FieldMapper ObjectFieldName="CY12" PersistenceFieldName="cy_12" />
+			<FieldMapper ObjectFieldName="NY01" PersistenceFieldName="ny_01" />
+			<FieldMapper ObjectFieldName="NY02" PersistenceFieldName="ny_02" />
+			<FieldMapper ObjectFieldName="NY03" PersistenceFieldName="ny_03" />
+			<FieldMapper ObjectFieldName="NY04" PersistenceFieldName="ny_04" />
+			<FieldMapper ObjectFieldName="NY05" PersistenceFieldName="ny_05" />
+			<FieldMapper ObjectFieldName="NY06" PersistenceFieldName="ny_06" />
+			<FieldMapper ObjectFieldName="NY07" PersistenceFieldName="ny_07" />
+			<FieldMapper ObjectFieldName="NY08" PersistenceFieldName="ny_08" />
+			<FieldMapper ObjectFieldName="NY09" PersistenceFieldName="ny_09" />
+			<FieldMapper ObjectFieldName="NY10" PersistenceFieldName="ny_10" />
+			<FieldMapper ObjectFieldName="NY11" PersistenceFieldName="ny_11" />
+			<FieldMapper ObjectFieldName="NY12" PersistenceFieldName="ny_12" />
+      <FieldMapper ObjectFieldName="HasOverride" PersistenceFieldName="has_override" />
+      <FieldMapper ObjectFieldName="HasComment" PersistenceFieldName="has_comment" />
+      <FieldMapper ObjectFieldName="RowVersion" PersistenceFieldName="timestamp" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastCommentAndOverride">
+    <ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastCommentAndOverride">
+      <FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+      <FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+      <FieldMapper ObjectFieldName="POSSalesEndDate" PersistenceFieldName="pos_sales_end_date" />
+      <FieldMapper ObjectFieldName="ItemNumber" PersistenceFieldName="item_number" />
+      <FieldMapper ObjectFieldName="ForecastMethod" PersistenceFieldName="forecast_method" />
+      <FieldMapper ObjectFieldName="ForecastValueKey" PersistenceFieldName="forecast_value_key" />
+      <FieldMapper ObjectFieldName="CommentOverrideDateTime" PersistenceFieldName="date_time" />
+      <FieldMapper ObjectFieldName="Comment" PersistenceFieldName="comment" />
+      <FieldMapper ObjectFieldName="IsOverride" PersistenceFieldName="manual_flag" />
+    </ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastCollectionHeader">
+    <ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastHeader">
+      <FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+      <FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+      <FieldMapper ObjectFieldName="POSSalesEndDate" PersistenceFieldName="pos_sales_end_date" />
+      <FieldMapper ObjectFieldName="RowVersion" PersistenceFieldName="timestamp" />
+    </ObjectMapper>
+  </BusinessObject>  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastReport">
+    <ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastReport">
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="GroupByCode" PersistenceFieldName="group_by_code" />
+			<FieldMapper ObjectFieldName="GroupBy" PersistenceFieldName="group_by" />
+			<FieldMapper ObjectFieldName="ForecastMonth01Quantity" PersistenceFieldName="forecast_month_01_quantity" />
+			<FieldMapper ObjectFieldName="ForecastMonth02Quantity" PersistenceFieldName="forecast_month_02_quantity" />
+			<FieldMapper ObjectFieldName="ForecastMonth03Quantity" PersistenceFieldName="forecast_month_03_quantity" />
+			<FieldMapper ObjectFieldName="ForecastMonth04Quantity" PersistenceFieldName="forecast_month_04_quantity" />
+			<FieldMapper ObjectFieldName="ForecastMonth05Quantity" PersistenceFieldName="forecast_month_05_quantity" />
+			<FieldMapper ObjectFieldName="ForecastMonth06Quantity" PersistenceFieldName="forecast_month_06_quantity" />
+			<FieldMapper ObjectFieldName="ForecastMonth07Quantity" PersistenceFieldName="forecast_month_07_quantity" />
+			<FieldMapper ObjectFieldName="ForecastMonth08Quantity" PersistenceFieldName="forecast_month_08_quantity" />
+			<FieldMapper ObjectFieldName="ForecastMonth09Quantity" PersistenceFieldName="forecast_month_09_quantity" />
+			<FieldMapper ObjectFieldName="ForecastMonth10Quantity" PersistenceFieldName="forecast_month_10_quantity" />
+			<FieldMapper ObjectFieldName="ForecastMonth11Quantity" PersistenceFieldName="forecast_month_11_quantity" />
+			<FieldMapper ObjectFieldName="ForecastMonth12Quantity" PersistenceFieldName="forecast_month_12_quantity" />
+	  </ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.BonusAndDiscontinuedByCompany">
+    <ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="BonusAndDiscontinuedByCompany">
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="ItemNumber" PersistenceFieldName="item_number" />
+			<FieldMapper ObjectFieldName="DiscontinuedEffectiveDate" PersistenceFieldName="discontinued_effective_date" />
+			<FieldMapper ObjectFieldName="PY01" PersistenceFieldName="py_01" />
+			<FieldMapper ObjectFieldName="PY02" PersistenceFieldName="py_02" />
+			<FieldMapper ObjectFieldName="PY03" PersistenceFieldName="py_03" />
+			<FieldMapper ObjectFieldName="PY04" PersistenceFieldName="py_04" />
+			<FieldMapper ObjectFieldName="PY05" PersistenceFieldName="py_05" />
+			<FieldMapper ObjectFieldName="PY06" PersistenceFieldName="py_06" />
+			<FieldMapper ObjectFieldName="PY07" PersistenceFieldName="py_07" />
+			<FieldMapper ObjectFieldName="PY08" PersistenceFieldName="py_08" />
+			<FieldMapper ObjectFieldName="PY09" PersistenceFieldName="py_09" />
+			<FieldMapper ObjectFieldName="PY10" PersistenceFieldName="py_10" />
+			<FieldMapper ObjectFieldName="PY11" PersistenceFieldName="py_11" />
+			<FieldMapper ObjectFieldName="PY12" PersistenceFieldName="py_12" />
+			<FieldMapper ObjectFieldName="CY01" PersistenceFieldName="cy_01" />
+			<FieldMapper ObjectFieldName="CY02" PersistenceFieldName="cy_02" />
+			<FieldMapper ObjectFieldName="CY03" PersistenceFieldName="cy_03" />
+			<FieldMapper ObjectFieldName="CY04" PersistenceFieldName="cy_04" />
+			<FieldMapper ObjectFieldName="CY05" PersistenceFieldName="cy_05" />
+			<FieldMapper ObjectFieldName="CY06" PersistenceFieldName="cy_06" />
+			<FieldMapper ObjectFieldName="CY07" PersistenceFieldName="cy_07" />
+			<FieldMapper ObjectFieldName="CY08" PersistenceFieldName="cy_08" />
+			<FieldMapper ObjectFieldName="CY09" PersistenceFieldName="cy_09" />
+			<FieldMapper ObjectFieldName="CY10" PersistenceFieldName="cy_10" />
+			<FieldMapper ObjectFieldName="CY11" PersistenceFieldName="cy_11" />
+			<FieldMapper ObjectFieldName="CY12" PersistenceFieldName="cy_12" />
+			<FieldMapper ObjectFieldName="NY01" PersistenceFieldName="ny_01" />
+			<FieldMapper ObjectFieldName="NY02" PersistenceFieldName="ny_02" />
+			<FieldMapper ObjectFieldName="NY03" PersistenceFieldName="ny_03" />
+			<FieldMapper ObjectFieldName="NY04" PersistenceFieldName="ny_04" />
+			<FieldMapper ObjectFieldName="NY05" PersistenceFieldName="ny_05" />
+			<FieldMapper ObjectFieldName="NY06" PersistenceFieldName="ny_06" />
+			<FieldMapper ObjectFieldName="NY07" PersistenceFieldName="ny_07" />
+			<FieldMapper ObjectFieldName="NY08" PersistenceFieldName="ny_08" />
+			<FieldMapper ObjectFieldName="NY09" PersistenceFieldName="ny_09" />
+			<FieldMapper ObjectFieldName="NY10" PersistenceFieldName="ny_10" />
+			<FieldMapper ObjectFieldName="NY11" PersistenceFieldName="ny_11" />
+			<FieldMapper ObjectFieldName="NY12" PersistenceFieldName="ny_12" />
+      <FieldMapper ObjectFieldName="RowVersion" PersistenceFieldName="timestamp" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.BonusAndDiscontinuedByCustomer">
+		<ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="BonusAndDiscontinuedByCustomer">
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+			<FieldMapper ObjectFieldName="ItemNumber" PersistenceFieldName="item_number" />
+			<FieldMapper ObjectFieldName="DiscontinuedEffectiveDate" PersistenceFieldName="discontinued_effective_date" />
+			<FieldMapper ObjectFieldName="PY01" PersistenceFieldName="py_01" />
+			<FieldMapper ObjectFieldName="PY02" PersistenceFieldName="py_02" />
+			<FieldMapper ObjectFieldName="PY03" PersistenceFieldName="py_03" />
+			<FieldMapper ObjectFieldName="PY04" PersistenceFieldName="py_04" />
+			<FieldMapper ObjectFieldName="PY05" PersistenceFieldName="py_05" />
+			<FieldMapper ObjectFieldName="PY06" PersistenceFieldName="py_06" />
+			<FieldMapper ObjectFieldName="PY07" PersistenceFieldName="py_07" />
+			<FieldMapper ObjectFieldName="PY08" PersistenceFieldName="py_08" />
+			<FieldMapper ObjectFieldName="PY09" PersistenceFieldName="py_09" />
+			<FieldMapper ObjectFieldName="PY10" PersistenceFieldName="py_10" />
+			<FieldMapper ObjectFieldName="PY11" PersistenceFieldName="py_11" />
+			<FieldMapper ObjectFieldName="PY12" PersistenceFieldName="py_12" />
+			<FieldMapper ObjectFieldName="CY01" PersistenceFieldName="cy_01" />
+			<FieldMapper ObjectFieldName="CY02" PersistenceFieldName="cy_02" />
+			<FieldMapper ObjectFieldName="CY03" PersistenceFieldName="cy_03" />
+			<FieldMapper ObjectFieldName="CY04" PersistenceFieldName="cy_04" />
+			<FieldMapper ObjectFieldName="CY05" PersistenceFieldName="cy_05" />
+			<FieldMapper ObjectFieldName="CY06" PersistenceFieldName="cy_06" />
+			<FieldMapper ObjectFieldName="CY07" PersistenceFieldName="cy_07" />
+			<FieldMapper ObjectFieldName="CY08" PersistenceFieldName="cy_08" />
+			<FieldMapper ObjectFieldName="CY09" PersistenceFieldName="cy_09" />
+			<FieldMapper ObjectFieldName="CY10" PersistenceFieldName="cy_10" />
+			<FieldMapper ObjectFieldName="CY11" PersistenceFieldName="cy_11" />
+			<FieldMapper ObjectFieldName="CY12" PersistenceFieldName="cy_12" />
+			<FieldMapper ObjectFieldName="NY01" PersistenceFieldName="ny_01" />
+			<FieldMapper ObjectFieldName="NY02" PersistenceFieldName="ny_02" />
+			<FieldMapper ObjectFieldName="NY03" PersistenceFieldName="ny_03" />
+			<FieldMapper ObjectFieldName="NY04" PersistenceFieldName="ny_04" />
+			<FieldMapper ObjectFieldName="NY05" PersistenceFieldName="ny_05" />
+			<FieldMapper ObjectFieldName="NY06" PersistenceFieldName="ny_06" />
+			<FieldMapper ObjectFieldName="NY07" PersistenceFieldName="ny_07" />
+			<FieldMapper ObjectFieldName="NY08" PersistenceFieldName="ny_08" />
+			<FieldMapper ObjectFieldName="NY09" PersistenceFieldName="ny_09" />
+			<FieldMapper ObjectFieldName="NY10" PersistenceFieldName="ny_10" />
+			<FieldMapper ObjectFieldName="NY11" PersistenceFieldName="ny_11" />
+			<FieldMapper ObjectFieldName="NY12" PersistenceFieldName="ny_12" />
+      <FieldMapper ObjectFieldName="RowVersion" PersistenceFieldName="timestamp" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastSalesRate">
+    <ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastSalesRate">
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+			<FieldMapper ObjectFieldName="POSSalesEndDate" PersistenceFieldName="pos_sales_end_date" />
+			<FieldMapper ObjectFieldName="ItemNumber" PersistenceFieldName="item_number" />
+			<FieldMapper ObjectFieldName="TrendFactor" PersistenceFieldName="trend_factor" />
+			<FieldMapper ObjectFieldName="POSWeek1Quantity" PersistenceFieldName="pos_week_1_quantity" />
+			<FieldMapper ObjectFieldName="POSWeek2Quantity" PersistenceFieldName="pos_week_2_quantity" />
+			<FieldMapper ObjectFieldName="POSWeek3Quantity" PersistenceFieldName="pos_week_3_quantity" />
+			<FieldMapper ObjectFieldName="POSWeek4Quantity" PersistenceFieldName="pos_week_4_quantity" />
+			<FieldMapper ObjectFieldName="StoreCountExisting" PersistenceFieldName="store_count_existing" />
+			<FieldMapper ObjectFieldName="StoreCountNew" PersistenceFieldName="store_count_new" />
+			<FieldMapper ObjectFieldName="SalesRate" PersistenceFieldName="sales_rate" />
+			<FieldMapper ObjectFieldName="SalesRatePrevious" PersistenceFieldName="sales_rate_previous" />
+      <FieldMapper ObjectFieldName="HasOverride" PersistenceFieldName="has_override" />
+      <FieldMapper ObjectFieldName="HasComment" PersistenceFieldName="has_comment" />
+      <FieldMapper ObjectFieldName="RowVersion" PersistenceFieldName="timestamp" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastSalesRateCommentAndOverride">
+    <ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastSalesRateCommentAndOverride">
+      <FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+      <FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+      <FieldMapper ObjectFieldName="ItemNumber" PersistenceFieldName="item_number" />
+      <FieldMapper ObjectFieldName="POSSalesEndDate" PersistenceFieldName="pos_sales_end_date" />
+      <FieldMapper ObjectFieldName="CommentOverrideDateTime" PersistenceFieldName="date_time" />
+      <FieldMapper ObjectFieldName="Comment" PersistenceFieldName="comment" />
+      <FieldMapper ObjectFieldName="IsOverride" PersistenceFieldName="manual_flag" />
+    </ObjectMapper>
+  </BusinessObject>  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastSalesRateCollectionHeader">
+    <ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastSalesRateHeader">
+      <FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+      <FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+      <FieldMapper ObjectFieldName="POSSalesEndDate" PersistenceFieldName="pos_sales_end_date" />
+      <FieldMapper ObjectFieldName="POSNumberOfWeeks" PersistenceFieldName="pos_number_of_weeks" />
+      <FieldMapper ObjectFieldName="RowVersion" PersistenceFieldName="timestamp" />
+    </ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastTrendByCompanyItem">
+		<ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastTrendByCompanyItem">
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="ItemNumber" PersistenceFieldName="item_number" />
+			<FieldMapper ObjectFieldName="ForecastMethod" PersistenceFieldName="forecast_method" />
+			<FieldMapper ObjectFieldName="FactorMonth01" PersistenceFieldName="factor_month_01" />
+			<FieldMapper ObjectFieldName="FactorMonth02" PersistenceFieldName="factor_month_02" />
+			<FieldMapper ObjectFieldName="FactorMonth03" PersistenceFieldName="factor_month_03" />
+			<FieldMapper ObjectFieldName="FactorMonth04" PersistenceFieldName="factor_month_04" />
+			<FieldMapper ObjectFieldName="FactorMonth05" PersistenceFieldName="factor_month_05" />
+			<FieldMapper ObjectFieldName="FactorMonth06" PersistenceFieldName="factor_month_06" />
+			<FieldMapper ObjectFieldName="FactorMonth07" PersistenceFieldName="factor_month_07" />
+			<FieldMapper ObjectFieldName="FactorMonth08" PersistenceFieldName="factor_month_08" />
+			<FieldMapper ObjectFieldName="FactorMonth09" PersistenceFieldName="factor_month_09" />
+			<FieldMapper ObjectFieldName="FactorMonth10" PersistenceFieldName="factor_month_10" />
+			<FieldMapper ObjectFieldName="FactorMonth11" PersistenceFieldName="factor_month_11" />
+			<FieldMapper ObjectFieldName="FactorMonth12" PersistenceFieldName="factor_month_12" />
+      <FieldMapper ObjectFieldName="RowVersion" PersistenceFieldName="timestamp" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastTrendByCompanyProductGroup">
+    <ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastTrendByCompanyProductGroup">
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="ProductGroupCode" PersistenceFieldName="product_group_code" />
+			<FieldMapper ObjectFieldName="ForecastMethod" PersistenceFieldName="forecast_method" />
+			<FieldMapper ObjectFieldName="FactorMonth01" PersistenceFieldName="factor_month_01" />
+			<FieldMapper ObjectFieldName="FactorMonth02" PersistenceFieldName="factor_month_02" />
+			<FieldMapper ObjectFieldName="FactorMonth03" PersistenceFieldName="factor_month_03" />
+			<FieldMapper ObjectFieldName="FactorMonth04" PersistenceFieldName="factor_month_04" />
+			<FieldMapper ObjectFieldName="FactorMonth05" PersistenceFieldName="factor_month_05" />
+			<FieldMapper ObjectFieldName="FactorMonth06" PersistenceFieldName="factor_month_06" />
+			<FieldMapper ObjectFieldName="FactorMonth07" PersistenceFieldName="factor_month_07" />
+			<FieldMapper ObjectFieldName="FactorMonth08" PersistenceFieldName="factor_month_08" />
+			<FieldMapper ObjectFieldName="FactorMonth09" PersistenceFieldName="factor_month_09" />
+			<FieldMapper ObjectFieldName="FactorMonth10" PersistenceFieldName="factor_month_10" />
+			<FieldMapper ObjectFieldName="FactorMonth11" PersistenceFieldName="factor_month_11" />
+			<FieldMapper ObjectFieldName="FactorMonth12" PersistenceFieldName="factor_month_12" />
+      <FieldMapper ObjectFieldName="RowVersion" PersistenceFieldName="timestamp" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastTrendByCustomerItem">
+    <ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastTrendByCustomerItem">
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+			<FieldMapper ObjectFieldName="ItemNumber" PersistenceFieldName="item_number" />
+			<FieldMapper ObjectFieldName="ForecastMethod" PersistenceFieldName="forecast_method" />
+			<FieldMapper ObjectFieldName="FactorMonth01" PersistenceFieldName="factor_month_01" />
+			<FieldMapper ObjectFieldName="FactorMonth02" PersistenceFieldName="factor_month_02" />
+			<FieldMapper ObjectFieldName="FactorMonth03" PersistenceFieldName="factor_month_03" />
+			<FieldMapper ObjectFieldName="FactorMonth04" PersistenceFieldName="factor_month_04" />
+			<FieldMapper ObjectFieldName="FactorMonth05" PersistenceFieldName="factor_month_05" />
+			<FieldMapper ObjectFieldName="FactorMonth06" PersistenceFieldName="factor_month_06" />
+			<FieldMapper ObjectFieldName="FactorMonth07" PersistenceFieldName="factor_month_07" />
+			<FieldMapper ObjectFieldName="FactorMonth08" PersistenceFieldName="factor_month_08" />
+			<FieldMapper ObjectFieldName="FactorMonth09" PersistenceFieldName="factor_month_09" />
+			<FieldMapper ObjectFieldName="FactorMonth10" PersistenceFieldName="factor_month_10" />
+			<FieldMapper ObjectFieldName="FactorMonth11" PersistenceFieldName="factor_month_11" />
+			<FieldMapper ObjectFieldName="FactorMonth12" PersistenceFieldName="factor_month_12" />
+      <FieldMapper ObjectFieldName="RowVersion" PersistenceFieldName="timestamp" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastTrendByCustomerProductGroup">
+		<ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastTrendByCustomerProductGroup">
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+			<FieldMapper ObjectFieldName="ProductGroupCode" PersistenceFieldName="product_group_code" />
+			<FieldMapper ObjectFieldName="ForecastMethod" PersistenceFieldName="forecast_method" />
+			<FieldMapper ObjectFieldName="FactorMonth01" PersistenceFieldName="factor_month_01" />
+			<FieldMapper ObjectFieldName="FactorMonth02" PersistenceFieldName="factor_month_02" />
+			<FieldMapper ObjectFieldName="FactorMonth03" PersistenceFieldName="factor_month_03" />
+			<FieldMapper ObjectFieldName="FactorMonth04" PersistenceFieldName="factor_month_04" />
+			<FieldMapper ObjectFieldName="FactorMonth05" PersistenceFieldName="factor_month_05" />
+			<FieldMapper ObjectFieldName="FactorMonth06" PersistenceFieldName="factor_month_06" />
+			<FieldMapper ObjectFieldName="FactorMonth07" PersistenceFieldName="factor_month_07" />
+			<FieldMapper ObjectFieldName="FactorMonth08" PersistenceFieldName="factor_month_08" />
+			<FieldMapper ObjectFieldName="FactorMonth09" PersistenceFieldName="factor_month_09" />
+			<FieldMapper ObjectFieldName="FactorMonth10" PersistenceFieldName="factor_month_10" />
+			<FieldMapper ObjectFieldName="FactorMonth11" PersistenceFieldName="factor_month_11" />
+			<FieldMapper ObjectFieldName="FactorMonth12" PersistenceFieldName="factor_month_12" />
+      <FieldMapper ObjectFieldName="RowVersion" PersistenceFieldName="timestamp" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastTrendProductGroupItem">
+		<ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastTrendProductGroupItem">
+			<FieldMapper ObjectFieldName="ItemNumber" PersistenceFieldName="item_number" />
+			<FieldMapper ObjectFieldName="ForecastMethod" PersistenceFieldName="forecast_method" />
+			<FieldMapper ObjectFieldName="FactorMonth01" PersistenceFieldName="factor_month_01" />
+			<FieldMapper ObjectFieldName="FactorMonth02" PersistenceFieldName="factor_month_02" />
+			<FieldMapper ObjectFieldName="FactorMonth03" PersistenceFieldName="factor_month_03" />
+			<FieldMapper ObjectFieldName="FactorMonth04" PersistenceFieldName="factor_month_04" />
+			<FieldMapper ObjectFieldName="FactorMonth05" PersistenceFieldName="factor_month_05" />
+			<FieldMapper ObjectFieldName="FactorMonth06" PersistenceFieldName="factor_month_06" />
+			<FieldMapper ObjectFieldName="FactorMonth07" PersistenceFieldName="factor_month_07" />
+			<FieldMapper ObjectFieldName="FactorMonth08" PersistenceFieldName="factor_month_08" />
+			<FieldMapper ObjectFieldName="FactorMonth09" PersistenceFieldName="factor_month_09" />
+			<FieldMapper ObjectFieldName="FactorMonth10" PersistenceFieldName="factor_month_10" />
+			<FieldMapper ObjectFieldName="FactorMonth11" PersistenceFieldName="factor_month_11" />
+			<FieldMapper ObjectFieldName="FactorMonth12" PersistenceFieldName="factor_month_12" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.POS">
+    <ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="POS">
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+			<FieldMapper ObjectFieldName="ItemNumber" PersistenceFieldName="item_number" />
+			<FieldMapper ObjectFieldName="WeekEndDate" PersistenceFieldName="week_end_date" />
+			<FieldMapper ObjectFieldName="Quantity" PersistenceFieldName="quantity" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.POSLatestDateAndGap">
+		<ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="POSLatestDateAndGap">
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+			<FieldMapper ObjectFieldName="LatestWeekEndDate" PersistenceFieldName="latest_week_end_date" />
+			<FieldMapper ObjectFieldName="NumOfWeeks" PersistenceFieldName="num_of_weeks" />
+			<FieldMapper ObjectFieldName="GapFlag" PersistenceFieldName="gap_flag" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ActualSales">
+		<ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="ActualSales">
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+			<FieldMapper ObjectFieldName="ItemNumber" PersistenceFieldName="item_number" />
+			<FieldMapper ObjectFieldName="Month" PersistenceFieldName="month" />
+			<FieldMapper ObjectFieldName="Quantity" PersistenceFieldName="quantity" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ActualSalesLatestDateAndGap">
+		<ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="ActualSalesLatestDateAndGap">
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+			<FieldMapper ObjectFieldName="LatestActualSalesEndDate" PersistenceFieldName="latest_actual_sales_end_date" />
+			<FieldMapper ObjectFieldName="RollingAverageNumberOfMonths" PersistenceFieldName="rolling_average_number_of_months" />
+			<FieldMapper ObjectFieldName="GapFlag" PersistenceFieldName="gap_flag" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ActualSalesReport">
+		<ObjectMapper Type="RdbRecord" RdbConnectionKey="PWCConnectionString" RdbEntityName="ActualSalesReport">
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="GroupByCode" PersistenceFieldName="group_by_code" />
+			<FieldMapper ObjectFieldName="Month" PersistenceFieldName="month" />
+			<FieldMapper ObjectFieldName="Quantity" PersistenceFieldName="quantity" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.Company+ParameteredCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="CompanyCollection">
+			<!-- Parameter Field Map for Parametered Collection-->
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ProductGroup+ParameteredCollection">
+    <ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ProductGroupCollection">
+			<!-- Parameter Field Map for Parametered Collection-->
+			<FieldMapper ObjectFieldName="ProductGroupCode" PersistenceFieldName="product_group_code" />
+			<FieldMapper ObjectFieldName="BrandCode" PersistenceFieldName="brand_code" />
+			<FieldMapper ObjectFieldName="ProductCategoryCode" PersistenceFieldName="product_category_code" />
+			<FieldMapper ObjectFieldName="ProductGroupDescription" PersistenceFieldName="product_group_description" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.Customer+ParameteredCollection">
+    <ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="CustomerParameteredCollection">
+      <!-- Parameter Field Map for Parametered Collection-->
+      <FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+      <FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+    </ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.Customer+WithCompanyParentCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="CustomerCollection" />
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.Item+ParameteredCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ItemCollection">
+			<!-- Parameter Field Map for Parametered Collection-->
+			<FieldMapper ObjectFieldName="ItemNumber" PersistenceFieldName="item_number" />
+			<FieldMapper ObjectFieldName="ItemDescription" PersistenceFieldName="item_description" />
+			<FieldMapper ObjectFieldName="ProductGroupCode" PersistenceFieldName="product_group_code" />
+			<FieldMapper ObjectFieldName="BrandCode" PersistenceFieldName="brand_code" />
+			<FieldMapper ObjectFieldName="ProductCategoryCode" PersistenceFieldName="product_category_code" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.Brand+ParameteredCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="BrandCollection">
+			<!-- Parameter Field Map for Parametered Collection-->
+			<FieldMapper ObjectFieldName="BrandCode" PersistenceFieldName="brand_code" />
+			<FieldMapper ObjectFieldName="BrandDescription" PersistenceFieldName="brand_description" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ProductCategory+ParameteredCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ProductCategoryCollection">
+			<!-- Parameter Field Map for Parametered Collection-->
+			<FieldMapper ObjectFieldName="ProductCategoryCode" PersistenceFieldName="product_category_code" />
+			<FieldMapper ObjectFieldName="ProductCategoryDescription" PersistenceFieldName="product_category_description" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastParameter+WithCustomerParentCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastParameterCollection" />
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastSalesRate+WithCustomerParentParameteredCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastSalesRateCollection">
+			<!-- Parameter Field Map for Parametered Collection-->
+			<FieldMapper ObjectFieldName="POSNumberOfWeeks" PersistenceFieldName="pos_number_of_weeks" />
+			<FieldMapper ObjectFieldName="POSSalesEndDate" PersistenceFieldName="pos_sales_end_date" />
+			<FieldMapper ObjectFieldName="ForecastSalesRateAction" PersistenceFieldName="forecast_sales_rate_action" />
+			<FieldMapper ObjectFieldName="IsGettingPreviousOverride" PersistenceFieldName="is_getting_previous_override" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastSalesRate+PreviousSalesRateCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="PreviousForecastSalesRateCollection">
+			<!-- Parameter Field Map for Parametered Collection-->
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+			<FieldMapper ObjectFieldName="ItemNumber" PersistenceFieldName="item_number" />
+			<FieldMapper ObjectFieldName="POSSalesEndDate" PersistenceFieldName="pos_sales_end_date" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastSalesRateCommentAndOverride+WithForecastSalesRateParentCollection">
+    <ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastSalesRateCommentAndOverrideCollection" />
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastTrendByCompanyItem+WithCompanyParentCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastTrendByCompanyItemCollection" />
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastTrendByCompanyProductGroup+WithCompanyParentCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastTrendByCompanyProductGroupCollection" />
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastTrendProductGroupItem+ByCompanyParameteredCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastTrendByCompanyProductGroupItemCollection">
+			<!-- Parameter Field Map for Parametered Collection-->
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastTrendByCustomerItem+WithCustomerParentCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastTrendByCustomerItemCollection" />
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastTrendByCustomerProductGroup+WithCustomerParentCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastTrendByCustomerProductGroupCollection" />
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastTrendProductGroupItem+ByCustomerParameteredCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastTrendByCustomerProductGroupItemCollection">
+			<!-- Parameter Field Map for Parametered Collection-->
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.POS+ParameteredCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="POSCollection">
+			<!-- Parameter Field Map for Parametered Collection-->
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+			<FieldMapper ObjectFieldName="ItemNumber" PersistenceFieldName="item_number" />
+			<FieldMapper ObjectFieldName="WeekEndDate" PersistenceFieldName="week_end_date" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.POSLatestDateAndGap+ParameteredCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="POSLatestDateAndGapCollection">
+			<!-- Parameter Field Map for Parametered Collection-->
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+			<FieldMapper ObjectFieldName="WeekEndDate" PersistenceFieldName="week_end_date" />
+			<FieldMapper ObjectFieldName="NumOfWeeks" PersistenceFieldName="num_of_weeks" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ActualSales+WithCustomerParentParameteredCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ActualSalesCollection">
+			<!-- Parameter Field Map for Parametered Collection-->
+			<FieldMapper ObjectFieldName="BeginDate" PersistenceFieldName="begin_date" />
+			<FieldMapper ObjectFieldName="EndDate" PersistenceFieldName="end_date" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ActualSalesReport+ParameteredCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ActualSalesReportCollection">
+			<!-- Parameter Field Map for Parametered Collection-->
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumberFrom" PersistenceFieldName="customer_number_from" />
+			<FieldMapper ObjectFieldName="CustomerNumberTo" PersistenceFieldName="customer_number_to" />
+			<FieldMapper ObjectFieldName="BrandCodeFrom" PersistenceFieldName="brand_code_from" />
+			<FieldMapper ObjectFieldName="BrandCodeTo" PersistenceFieldName="brand_code_to" />
+			<FieldMapper ObjectFieldName="ProductCategoryCodeFrom" PersistenceFieldName="product_category_code_from" />
+			<FieldMapper ObjectFieldName="ProductCategoryCodeTo" PersistenceFieldName="product_category_code_to" />
+			<FieldMapper ObjectFieldName="GroupBy" PersistenceFieldName="group_by" />
+			<FieldMapper ObjectFieldName="ForecastMethods" PersistenceFieldName="forecast_methods" />
+			<FieldMapper ObjectFieldName="ForecastYear" PersistenceFieldName="forecast_year" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ActualSalesLatestDateAndGap+ParameteredCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ActualSalesLatestDateAndGapCollection">
+			<!-- Parameter Field Map for Parametered Collection-->
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumber" PersistenceFieldName="customer_number" />
+			<FieldMapper ObjectFieldName="ActualSalesEndDate" PersistenceFieldName="actual_sales_end_date" />
+			<FieldMapper ObjectFieldName="RollingAverageNumberOfMonths" PersistenceFieldName="rolling_average_number_of_months" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.Forecast+WithCustomerParentParameteredCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastCollection">
+			<!-- Parameter Field Map for Parametered Collection-->
+			<FieldMapper ObjectFieldName="POSSalesEndDate" PersistenceFieldName="pos_sales_end_date" />
+			<FieldMapper ObjectFieldName="ForecastAction" PersistenceFieldName="forecast_action" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastCommentAndOverride+WithForecastParentCollection">
+    <ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastCommentAndOverrideCollection" />
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.ForecastReport+ParameteredCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastReportCollection">
+			<!-- Parameter Field Map for Parametered Collection-->
+			<FieldMapper ObjectFieldName="CompanyCode" PersistenceFieldName="company_code" />
+			<FieldMapper ObjectFieldName="CustomerNumberFrom" PersistenceFieldName="customer_number_from" />
+			<FieldMapper ObjectFieldName="CustomerNumberTo" PersistenceFieldName="customer_number_to" />
+			<FieldMapper ObjectFieldName="BrandCodeFrom" PersistenceFieldName="brand_code_from" />
+			<FieldMapper ObjectFieldName="BrandCodeTo" PersistenceFieldName="brand_code_to" />
+			<FieldMapper ObjectFieldName="ProductCategoryCodeFrom" PersistenceFieldName="product_category_code_from" />
+			<FieldMapper ObjectFieldName="ProductCategoryCodeTo" PersistenceFieldName="product_category_code_to" />
+			<FieldMapper ObjectFieldName="GroupBy" PersistenceFieldName="group_by" />
+			<FieldMapper ObjectFieldName="ForecastMethods" PersistenceFieldName="forecast_methods" />
+			<FieldMapper ObjectFieldName="ForecastYear" PersistenceFieldName="forecast_year" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.Forecast+WithCustomerParentPreviousCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="ForecastPreviousCollection">
+			<!-- Parameter Field Map for Parametered Collection-->
+			<FieldMapper ObjectFieldName="POSSalesEndDate" PersistenceFieldName="pos_sales_end_date" />
+		</ObjectMapper>
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.BonusAndDiscontinuedByCompany+WithCompanyParentCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="BonusAndDiscontinuedByCompanyCollection" />
+  </BusinessObject>
+  <BusinessObject BusinessObjectClassName="PWC.BusinessObject.BonusAndDiscontinuedByCustomer+WithCustomerParentCollection">
+		<ObjectMapper Type="RdbSet" RdbConnectionKey="PWCConnectionString" RdbEntityName="BonusAndDiscontinuedByCustomerCollection" />
+  </BusinessObject>
+  <!--ObjectMapper Type="RdbSet" RdbConnectionKey="PWCOracleConnectionString" RdbEntityName="ActualSalesCollection" /-->
+</BusinessObjectMappers>

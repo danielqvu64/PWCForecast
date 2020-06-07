@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[CustomerNameBcp] (
+    [ORIG_SYSTEM_CUSTOMER_REF] NVARCHAR (255) NULL,
+    [CUSTOMER_NAME]            NVARCHAR (255) NULL
+);
+

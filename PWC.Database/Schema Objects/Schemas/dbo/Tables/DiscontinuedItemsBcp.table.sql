@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[DiscontinuedItemsBcp] (
+    [CO_CODE]          NVARCHAR (255) NULL,
+    [ITEM_NUMBER]      NVARCHAR (255) NULL,
+    [CUSTOMER_NUMBER]  NVARCHAR (255) NULL,
+    [DISCONTINUE_DATE] DATETIME       NULL
+);
+

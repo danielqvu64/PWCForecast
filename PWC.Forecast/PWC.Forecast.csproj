@@ -1,0 +1,314 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3F829A78-7DBE-4089-A8A6-22120B950DB9}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PWC.Forecast</RootNamespace>
+    <AssemblyName>PWC.Forecast</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;TEMPFORECASTITEM</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="frmForecastManualOverride.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmForecastManualOverride.Designer.cs">
+      <DependentUpon>frmForecastManualOverride.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSalesRateCommentAndOverride.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSalesRateCommentAndOverride.Designer.cs">
+      <DependentUpon>frmSalesRateCommentAndOverride.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmBonusAndDiscontinuedExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBonusAndDiscontinuedExport.Designer.cs">
+      <DependentUpon>frmBonusAndDiscontinuedExport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmBrand.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmBrand.designer.cs">
+      <DependentUpon>frmBrand.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmForecastExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmForecastExport.Designer.cs">
+      <DependentUpon>frmForecastExport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmForecastComment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmForecastComment.Designer.cs">
+      <DependentUpon>frmForecastComment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmForecastVarianceReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmForecastVarianceReport.Designer.cs">
+      <DependentUpon>frmForecastVarianceReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmImport.Designer.cs">
+      <DependentUpon>frmImport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmItem.Designer.cs">
+      <DependentUpon>frmItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCustomer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCustomer.Designer.cs">
+      <DependentUpon>frmCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductCategory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductCategory.designer.cs">
+      <DependentUpon>frmProductCategory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductGroup.Designer.cs">
+      <DependentUpon>frmProductGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPWCForecast.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPWCForecast.Designer.cs">
+      <DependentUpon>frmPWCForecast.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSalesRateExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSalesRateExport.Designer.cs">
+      <DependentUpon>frmSalesRateExport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmForecastManualOverride.resx">
+      <DependentUpon>frmForecastManualOverride.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSalesRateCommentAndOverride.resx">
+      <DependentUpon>frmSalesRateCommentAndOverride.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmBonusAndDiscontinuedExport.resx">
+      <DependentUpon>frmBonusAndDiscontinuedExport.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmBrand.resx">
+      <DependentUpon>frmBrand.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmForecastExport.resx">
+      <DependentUpon>frmForecastExport.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmForecastComment.resx">
+      <DependentUpon>frmForecastComment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmForecastVarianceReport.resx">
+      <DependentUpon>frmForecastVarianceReport.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmImport.resx">
+      <DependentUpon>frmImport.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmItem.resx">
+      <DependentUpon>frmItem.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCustomer.resx">
+      <DependentUpon>frmCustomer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductCategory.resx">
+      <DependentUpon>frmProductCategory.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductGroup.resx">
+      <DependentUpon>frmProductGroup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPWCForecast.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>frmPWCForecast.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSalesRateExport.resx">
+      <DependentUpon>frmSalesRateExport.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\DataSources\PWC.BusinessObject.Calendar+ParameteredCollection.datasource" />
+    <None Include="Properties\DataSources\PWC.BusinessObject.Customer+WithCompanyParentCollection.datasource" />
+    <None Include="Properties\DataSources\PWC.BusinessObject.ForecastCommentAndOverride+WithForecastParentCollection.datasource" />
+    <None Include="Properties\DataSources\PWC.BusinessObject.ForecastParameter+WithCustomerParentCollection.datasource" />
+    <None Include="Properties\DataSources\PWC.BusinessObject.ForecastParameter+WithCustomerParentCollection1.datasource" />
+    <None Include="Properties\DataSources\PWC.BusinessObject.ForecastSalesRate+WithCustomerParentParameteredCollection.datasource" />
+    <None Include="Properties\DataSources\PWC.BusinessObject.ForecastSalesRateCommentAndOverride+WithForecastSalesRateParentCollection.datasource" />
+    <None Include="Properties\DataSources\PWC.BusinessObject.ForecastTrendFactorOverride+WithCustomerParentCollection.datasource" />
+    <None Include="Properties\DataSources\PWC.BusinessObject.Item+ParameteredCollection.datasource" />
+    <None Include="Properties\DataSources\PWC.BusinessObject.ProductGroup+ParameteredCollection.datasource" />
+    <None Include="Properties\DataSources\PWC.BusinessObject.SalesRate+WithCustomerParentCollection.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Utility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BusinessObjectMappers.xml" />
+    <None Include="Properties\DataSources\PWC.PersistenceInterface.HondaMessageFaultType.datasource" />
+    <None Include="Properties\DataSources\PWC.PersistenceInterface.HondaMessageHeaderType.datasource" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DVuLibrary\DVu.Library.BusinessObject\DVu.Library.BusinessObject.csproj">
+      <Project>{041A9D74-DD19-4983-B8CB-BA172117253A}</Project>
+      <Name>DVu.Library.BusinessObject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DVuLibrary\DVu.Library.PersistenceInterface\DVu.Library.PersistenceInterface.csproj">
+      <Project>{96488EEE-231B-472A-90E1-E5D99E60054C}</Project>
+      <Name>DVu.Library.PersistenceInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DVuLibrary\DVu.Library.PersistenceLayer\DVu.Library.PersistenceLayer.csproj">
+      <Project>{A78F0BDD-48D1-4A0F-9157-03C447D1230C}</Project>
+      <Name>DVu.Library.PersistenceLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PWC.BusinessObject\PWC.BusinessObject.csproj">
+      <Project>{54236F39-4811-4BB0-A975-E45FF50E7FEF}</Project>
+      <Name>PWC.BusinessObject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PWC.PersistenceInterface\PWC.PersistenceInterface.csproj">
+      <Project>{A58F7C76-5B11-4560-9854-EA10378000E6}</Project>
+      <Name>PWC.PersistenceInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PWC.PersistenceLayer\PWC.PersistenceLayer.csproj">
+      <Project>{EFFEBB21-8211-4F6A-80C9-F078E577D815}</Project>
+      <Name>PWC.PersistenceLayer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
