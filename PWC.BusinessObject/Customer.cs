@@ -537,17 +537,17 @@ namespace PWC.BusinessObject
         private void WriteForecast(StreamWriter sw, Forecast forecast, SqlInt32 currentMonthActualSales)
         {
             var calendar = Calendar.GetInstance();
-            var companyCode = CompanyCode == "002" ? "001" : CompanyCode == "805" ? "803" : CompanyCode.Value;
+
+            var companyCode = CompanyCode == "002" || CompanyCode == "301" ? "001" : CompanyCode == "805" ? "803" : CompanyCode.Value;
+
             var forecastMethod = CompanyCode == "805" && CustomerNumber ==  "ZZZZ" ? "D" + forecast.ForecastMethod : forecast.ForecastMethod;
+
             var customerNumber = _distinctForecastNameFlag ? CustomerNumber.Value : "ZZZZ";
             customerNumber = customerNumber.Replace("-D", "").Replace("-E", "");
-            var forecastNamePreffix = "";
-            if ("001|805".IndexOf(CompanyCode.Value, StringComparison.Ordinal) > -1)
-                forecastNamePreffix = "DOM";
-            else if (CompanyCode == "803" && CustomerNumber.Value.IndexOf("-D", StringComparison.Ordinal) > -1)
-                forecastNamePreffix = "DOM";
-            else
-                forecastNamePreffix = "EXP";
+
+            var forecastNamePreffix = CompanyCode == "001" || CompanyCode == "805" || (CompanyCode == "803" && CustomerNumber.Value.IndexOf("-D", StringComparison.Ordinal) > -1) ? "DOM" : "EXP";
+
+            if (CompanyCode == "301" && customerNumber == "ZZZZ") forecastNamePreffix = "CAN";
 
             if (!forecast.PY01.IsNull) sw.WriteLine("{0},{1}{2}{3},{4},{5},{6}", companyCode, forecastNamePreffix, customerNumber, forecastMethod, forecast.ItemNumber, calendar.GetMMdash01dashYY("PY01", forecast.CreatedDate.Value), forecast.PY01);
             if (!forecast.PY02.IsNull) sw.WriteLine("{0},{1}{2}{3},{4},{5},{6}", companyCode, forecastNamePreffix, customerNumber, forecastMethod, forecast.ItemNumber, calendar.GetMMdash01dashYY("PY02", forecast.CreatedDate.Value), forecast.PY02);
