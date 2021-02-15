@@ -549,6 +549,11 @@ namespace PWC.BusinessObject
 
             if (CompanyCode == "301" && customerNumber == "ZZZZ") forecastNamePreffix = "CAN";
 
+            if (CompanyCode == "001" && customerNumber == "91055") customerNumber = "TOPC";
+            if (CompanyCode == "001" && customerNumber == "1854") customerNumber = "AMAZ";
+            if (CompanyCode == "002" && customerNumber == "15285") customerNumber = "SINX";
+            if (CompanyCode == "002" && customerNumber == "90946") customerNumber = "SIGN";
+
             if (!forecast.PY01.IsNull) sw.WriteLine("{0},{1}{2}{3},{4},{5},{6}", companyCode, forecastNamePreffix, customerNumber, forecastMethod, forecast.ItemNumber, calendar.GetMMdash01dashYY("PY01", forecast.CreatedDate.Value), forecast.PY01);
             if (!forecast.PY02.IsNull) sw.WriteLine("{0},{1}{2}{3},{4},{5},{6}", companyCode, forecastNamePreffix, customerNumber, forecastMethod, forecast.ItemNumber, calendar.GetMMdash01dashYY("PY02", forecast.CreatedDate.Value), forecast.PY02);
             if (!forecast.PY03.IsNull) sw.WriteLine("{0},{1}{2}{3},{4},{5},{6}", companyCode, forecastNamePreffix, customerNumber, forecastMethod, forecast.ItemNumber, calendar.GetMMdash01dashYY("PY03", forecast.CreatedDate.Value), forecast.PY03);
