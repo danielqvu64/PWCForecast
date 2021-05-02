@@ -32,7 +32,6 @@
             this.lblFilePath = new System.Windows.Forms.Label();
             this.btnImport = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.btnBrowseFolder = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.cboCustomer = new System.Windows.Forms.ComboBox();
@@ -40,6 +39,7 @@
             this.lblCustomer = new System.Windows.Forms.Label();
             this.txtCompanyName = new System.Windows.Forms.TextBox();
             this.lblCompany = new System.Windows.Forms.Label();
+            this.lblProgress = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtFilePath
@@ -62,7 +62,7 @@
             // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(228, 89);
+            this.btnImport.Location = new System.Drawing.Point(228, 90);
             this.btnImport.Name = "btnImport";
             this.btnImport.Size = new System.Drawing.Size(62, 23);
             this.btnImport.TabIndex = 10;
@@ -74,22 +74,13 @@
             // 
             this.btnCancel.CausesValidation = false;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(296, 89);
+            this.btnCancel.Location = new System.Drawing.Point(296, 90);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(62, 23);
             this.btnCancel.TabIndex = 11;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(108, 68);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(371, 15);
-            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.progressBar1.TabIndex = 9;
-            this.progressBar1.Visible = false;
             // 
             // btnBrowseFolder
             // 
@@ -121,8 +112,8 @@
             this.txtCompanyCode.PromptChar = ' ';
             this.txtCompanyCode.Size = new System.Drawing.Size(25, 20);
             this.txtCompanyCode.TabIndex = 2;
-            this.txtCompanyCode.Validating += new System.ComponentModel.CancelEventHandler(this.txtCompanyCode_Validating);
             this.txtCompanyCode.GotFocus += new System.EventHandler(this.txtCompanyCode_GotFocus);
+            this.txtCompanyCode.Validating += new System.ComponentModel.CancelEventHandler(this.txtCompanyCode_Validating);
             // 
             // lblCustomer
             // 
@@ -151,6 +142,14 @@
             this.lblCompany.TabIndex = 1;
             this.lblCompany.Text = "Company:";
             // 
+            // lblProgress
+            // 
+            this.lblProgress.AutoSize = true;
+            this.lblProgress.Location = new System.Drawing.Point(160, 69);
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(0, 13);
+            this.lblProgress.TabIndex = 12;
+            // 
             // frmImport
             // 
             this.AcceptButton = this.btnImport;
@@ -158,13 +157,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(587, 124);
+            this.Controls.Add(this.lblProgress);
             this.Controls.Add(this.cboCustomer);
             this.Controls.Add(this.txtCompanyCode);
             this.Controls.Add(this.lblCustomer);
             this.Controls.Add(this.txtCompanyName);
             this.Controls.Add(this.lblCompany);
             this.Controls.Add(this.btnBrowseFolder);
-            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnImport);
             this.Controls.Add(this.txtFilePath);
@@ -174,8 +173,8 @@
             this.MinimizeBox = false;
             this.Name = "frmImport";
             this.Text = "POS Import";
-            this.Load += new System.EventHandler(this.frmPosImport_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmPosImport_FormClosing);
+            this.Load += new System.EventHandler(this.frmPosImport_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -186,7 +185,6 @@
         private System.Windows.Forms.Label lblFilePath;
         private System.Windows.Forms.Button btnImport;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Button btnBrowseFolder;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ComboBox cboCustomer;
@@ -194,5 +192,6 @@
         private System.Windows.Forms.Label lblCustomer;
         private System.Windows.Forms.TextBox txtCompanyName;
         private System.Windows.Forms.Label lblCompany;
+        private System.Windows.Forms.Label lblProgress;
     }
 }

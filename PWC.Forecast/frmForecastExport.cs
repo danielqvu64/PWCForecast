@@ -6,12 +6,14 @@ using System.Data.SqlTypes;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using PWC.BusinessObject;
+using System.Text;
 
 namespace PWC.Forecast
 {
     public partial class frmForecastExport : Form
     {
         private Company _company;
+        private Company.ParameteredCollection _companyCollection;
 
         public frmForecastExport(Company company)
         {
@@ -28,7 +30,6 @@ namespace PWC.Forecast
                 {
                     txtCompanyCode.Text = _company.CompanyCode.ToString();
                     txtCompanyName.Text = _company.CompanyName.ToString();
-                    bindingSourceSavedForecast.DataSource = PWC.PersistenceLayer.Utility.GetInstance().GetSavedForecastDateCollection(_company.CompanyCode, SqlString.Null, 12);
                 }
             }
             catch (Exception ex)
@@ -41,23 +42,29 @@ namespace PWC.Forecast
         {
             try
             {
+                if (txtCompanyCode.Text.Length != 3 && txtCompanyCode.Text.Length != 0)
+                {
+                    MessageBox.Show("An empty or 3 digit Company Code is expected.", "PWC Forecast");
+                    e.Cancel = true;
+                    return;
+                }
+                txtCompanyName.Text = string.Empty;
+                _companyCollection = new Company.ParameteredCollection(txtCompanyCode.Text);
+                _companyCollection.Load();
                 if (txtCompanyCode.Text.Length == 3)
                 {
                     if ((_company != null && _company.CompanyCode != txtCompanyCode.Text) ||
                         _company == null)
                     {
-                        Company.ParameteredCollection companyCollection = new Company.ParameteredCollection(txtCompanyCode.Text);
-                        companyCollection.Load();
-                        if (companyCollection.Count == 0)
+                        if (_companyCollection.Count == 0)
                         {
                             MessageBox.Show("Invalid Company Code.", "PWC Forecast");
                             e.Cancel = true;
                             return;
                         }
-                        _company = companyCollection[0];
-                        txtCompanyName.Text = _company.CompanyName.ToString();
-                        bindingSourceSavedForecast.DataSource = PWC.PersistenceLayer.Utility.GetInstance().GetSavedForecastDateCollection(_company.CompanyCode, SqlString.Null, 12);
+                        _company = _companyCollection[0];
                     }
+                    txtCompanyName.Text = _company.CompanyName.ToString();
                 }
             }
             catch (Exception ex)
@@ -70,18 +77,6 @@ namespace PWC.Forecast
         {
             try
             {
-                if (_company == null)
-                {
-                    MessageBox.Show("Please enter Company Code.", "PWC Forecast");
-                    txtCompanyCode.Focus();
-                    return;
-                }
-                if (rbtnByDate.Checked && cboSavedForecast.SelectedIndex < 1)
-                {
-                    MessageBox.Show("Please select a Saved Forecast.", "PWC Forecast");
-                    cboSavedForecast.Focus();
-                    return;
-                }
                 if (!Directory.Exists(Path.GetDirectoryName(txtFilePath.Text)))
                 {
                     MessageBox.Show("Export file folder does not exist. Please create the folder and try again.", "PWC Forecast");
@@ -90,17 +85,43 @@ namespace PWC.Forecast
                 }
                 this.Cursor = Cursors.WaitCursor;
                 progressBar1.Visible = true;
-                ForecastExportType forecastReportType;
-                if (rbtnPLCrossTab.Checked)
-                    forecastReportType = ForecastExportType.PipelineCrosstab;
+
+                ForecastExportType forecastExportType;
+                if (rbtnToOracle.Checked)
+                    forecastExportType = ForecastExportType.ToOracle;
                 else
-                    forecastReportType = ForecastExportType.ToOracle;
-                if (rbtnByDate.Checked)
-                    _company.ExportForecast(DateTime.Parse(((PWC.PersistenceLayer.Utility.ForecastDateMethod)cboSavedForecast.SelectedItem).POSSalesEndDate), txtFilePath.Text, chkAppendFile.Checked, forecastReportType, chkSubtractCurrentMonthSales.Checked);
-                else
-                    _company.ExportForecast(txtFilePath.Text, chkAppendFile.Checked, forecastReportType, chkSubtractCurrentMonthSales.Checked);
+                    forecastExportType = ForecastExportType.ForEdit;
+
+                var swForecast = new StreamWriter(txtFilePath.Text, chkAppendFile.Checked);
+                StreamWriter swForecastComment = null;
+                if (forecastExportType == ForecastExportType.ForEdit)
+                {
+                    swForecastComment = new StreamWriter(Customer.GetForecastCommentTxtFileName(txtFilePath.Text), chkAppendFile.Checked);
+                    Customer.WriteForecastToTxtHeaders(swForecast, swForecastComment);
+                }
+
+                if (_companyCollection != null && _companyCollection.Count > 1)
+                {
+                    for (var i = 0; i < _companyCollection.Count; i++)
+                    {
+                        var company = _companyCollection[i];
+                        company.ExportForecast(forecastExportType, swForecast, swForecastComment, chkSubtractCurrentMonthSales.Checked);
+                    }
+                }
+                else if (_company != null)
+                    _company.ExportForecast(forecastExportType, swForecast, swForecastComment, chkSubtractCurrentMonthSales.Checked);
+
+                if (swForecastComment != null)
+                {
+                    swForecastComment.Close();
+                    swForecastComment.Dispose();
+                }
+                swForecast.Close();
+                swForecast.Dispose();
+
                 if (txtFilePath.Text != ConfigurationManager.AppSettings["ExportForecastFilePath"])
                     Utility.GetInstance().SaveSetting("ExportForecastFilePath", txtFilePath.Text);
+
                 progressBar1.Visible = false;
                 this.Cursor = Cursors.Arrow;
                 Close();
@@ -129,10 +150,10 @@ namespace PWC.Forecast
         {
             try
             {
-                Regex rx = new System.Text.RegularExpressions.Regex(@"^(([a-zA-Z]:)|(\\{2}\w+)$?)(\\(\w[\w ].*))+(.csv|.CSV)$");
+                Regex rx = new System.Text.RegularExpressions.Regex(@"^(([a-zA-Z]:)|(\\{2}\w+)$?)(\\(\w[\w ].*))+(.csv|.CSV|.txt|.TXT|.prn|.PRN)$");
                 if (!rx.IsMatch(txtFilePath.Text))
                 {
-                    MessageBox.Show("Please enter a valid .csv file path.", "PWC Forecast");
+                    MessageBox.Show("Please enter a valid text file path.", "PWC Forecast");
                     e.Cancel = true;
                 }
             }
@@ -156,8 +177,8 @@ namespace PWC.Forecast
         {
             try
             {
-                saveFileDialog1.DefaultExt = ".csv";
-                saveFileDialog1.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+                saveFileDialog1.DefaultExt = ".txt";
+                saveFileDialog1.Filter = "Text Files (*.prn;*.txt;*.csv)|*.prn;*.txt;*.csv|All Files (*.*)|*.*";
                 FileInfo fileInfo = new FileInfo(txtFilePath.Text);
                 saveFileDialog1.InitialDirectory = fileInfo.DirectoryName;
                 saveFileDialog1.FileName = fileInfo.Name;
@@ -170,7 +191,7 @@ namespace PWC.Forecast
             }
         }
 
-        private void frmSalesRateForecastExport_FormClosing(object sender, FormClosingEventArgs e)
+        private void frmForecastExport_FormClosing(object sender, FormClosingEventArgs e)
         {
             try
             {
@@ -183,15 +204,15 @@ namespace PWC.Forecast
             }
         }
 
-        private void rbtnByDate_CheckedChanged(object sender, EventArgs e)
+        private void rbtnToOracle_CheckedChanged(object sender, EventArgs e)
         {
-            lblSavedForecast.Visible = rbtnByDate.Checked;
-            cboSavedForecast.Visible = rbtnByDate.Checked;
-        }
-
-        private void rbtnPLCrossTab_CheckedChanged(object sender, EventArgs e)
-        {
-            chkSubtractCurrentMonthSales.Visible = !rbtnPLCrossTab.Checked;
+            chkSubtractCurrentMonthSales.Visible = rbtnToOracle.Checked;
+            chkAppendFile.Visible = rbtnToOracle.Checked;
+            if (rbtnForEdit.Checked)
+            {
+                chkSubtractCurrentMonthSales.Checked = false;
+                chkAppendFile.Checked = false;
+            }
         }
     }
 }

@@ -43,6 +43,7 @@ namespace PWC.Forecast
             this.lblPOSSalesEndDate = new System.Windows.Forms.Label();
             this.menuStripPWCForecast = new System.Windows.Forms.MenuStrip();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.forecastFromEditedForecastFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.posFromOracleFlatFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.posFromACNeilsenFlatFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.posFromACNeilsenXLSFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -439,6 +440,7 @@ namespace PWC.Forecast
             // importToolStripMenuItem
             // 
             this.importToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.forecastFromEditedForecastFileToolStripMenuItem,
             this.posFromOracleFlatFileToolStripMenuItem,
             this.posFromACNeilsenFlatFileToolStripMenuItem,
             this.posFromACNeilsenXLSFileToolStripMenuItem,
@@ -452,6 +454,13 @@ namespace PWC.Forecast
             this.importToolStripMenuItem.Name = "importToolStripMenuItem";
             this.importToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
             this.importToolStripMenuItem.Text = "Import";
+            // 
+            // forecastFromEditedForecastFileToolStripMenuItem
+            // 
+            this.forecastFromEditedForecastFileToolStripMenuItem.Name = "forecastFromEditedForecastFileToolStripMenuItem";
+            this.forecastFromEditedForecastFileToolStripMenuItem.Size = new System.Drawing.Size(257, 22);
+            this.forecastFromEditedForecastFileToolStripMenuItem.Text = "Forecast from edited forecast file";
+            this.forecastFromEditedForecastFileToolStripMenuItem.Click += new System.EventHandler(this.forecastFromEditedForecastFileToolStripMenuItem_Click);
             // 
             // posFromOracleFlatFileToolStripMenuItem
             // 
@@ -3291,6 +3300,7 @@ namespace PWC.Forecast
         private System.Windows.Forms.Label lblPOSSalesEndDate;
         private System.Windows.Forms.MenuStrip menuStripPWCForecast;
         private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem forecastFromEditedForecastFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem posFromOracleFlatFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem posFromACNeilsenXLSFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem posFromACNeilsenXLSToCSVFileToolStripMenuItem;

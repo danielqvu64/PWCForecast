@@ -12,7 +12,7 @@ namespace PWC.BusinessObject
     { Bonus, Discontinued }
 
     public enum ForecastExportType
-    { ToOracle, PipelineCrosstab }
+    { ToOracle, ForEdit }
 
     public enum ForecastReportGroupBy
     { Brand, Item }
@@ -234,51 +234,23 @@ namespace PWC.BusinessObject
             sw.WriteLine();
         }
 
-        public void ExportForecast(DateTime posSalesEndDate, string filePath, bool appendFile, ForecastExportType forecastExportType, bool subtractCurrentMonthSales)
+        public void ExportForecast(ForecastExportType forecastExportType, StreamWriter swForecast, StreamWriter swForecastComment, bool subtractCurrentMonthSales)
         {
-            using (var sw = new StreamWriter(filePath, appendFile))
+            foreach (var customer in CustomerCollection)
             {
-                foreach (var customer in CustomerCollection)
-                {
-                    customer.POSSalesEndDate = posSalesEndDate;
-                    customer.ForecastAction = ForecastAction.Get;
-                    customer.ForecastCollection = null;
-                    if (customer.ForecastCollection != null)
-                    {
-                        if (customer.ForecastCollection.Count == 0)
-                            continue;
-                        if (forecastExportType == ForecastExportType.PipelineCrosstab &&
-                            !customer.ForecastCollection.ContainForecastMethod("PL"))
-                            continue;
-                    }
-                    customer.ExportForecast(forecastExportType, sw, subtractCurrentMonthSales);
-                }
-            }
-        }
-
-        public void ExportForecast(string filePath, bool appendFile, ForecastExportType forecastExportType, bool subtractCurrentMonthSales)
-        {
-            using (var sw = new StreamWriter(filePath, appendFile))
-            {
-                foreach (var customer in CustomerCollection)
-                {
-                    var savedForecastDates = PersistenceLayer.Utility.GetInstance().GetSavedForecastDateCollection(_companyCode, customer.CustomerNumber, 1);
-                    if (savedForecastDates.Count == 1)
-                        continue;
-                    var posSalesEndDate = DateTime.Parse(savedForecastDates[1].POSSalesEndDate);
-                    customer.POSSalesEndDate = posSalesEndDate;
-                    customer.ForecastAction = ForecastAction.Get;
-                    customer.ForecastCollection = null;
-                    if (customer.ForecastCollection != null)
-                    {
-                        if (customer.ForecastCollection.Count == 0)
-                            continue;
-                        if (forecastExportType == ForecastExportType.PipelineCrosstab &&
-                            !customer.ForecastCollection.ContainForecastMethod("PL"))
-                            continue;
-                    }
-                    customer.ExportForecast(forecastExportType, sw, subtractCurrentMonthSales);
-                }
+                var savedForecastDates = PersistenceLayer.Utility.GetInstance().GetSavedForecastDateCollection(_companyCode, customer.CustomerNumber, 1);
+                if (savedForecastDates.Count == 1)
+                    continue;
+                var posSalesEndDate = DateTime.Parse(savedForecastDates[1].POSSalesEndDate);
+                customer.POSSalesEndDate = posSalesEndDate;
+                customer.ForecastAction = ForecastAction.Get;
+                customer.ForecastCollection = null;
+                if (customer.ForecastCollection != null && customer.ForecastCollection.Count == 0)
+                    continue;
+                if (forecastExportType == ForecastExportType.ToOracle)
+                    customer.ExportForecastToOracle(swForecast, swForecastComment, subtractCurrentMonthSales);
+                else
+                    customer.ExportForecastToText(swForecast, swForecastComment);
             }
         }
 

@@ -181,10 +181,10 @@ namespace PWC.Forecast
         {
             try
             {
-                Regex rx = new System.Text.RegularExpressions.Regex(@"^(([a-zA-Z]:)|(\\{2}\w+)$?)(\\(\w[\w ].*))+(.csv|.CSV)$");
+                Regex rx = new System.Text.RegularExpressions.Regex(@"^(([a-zA-Z]:)|(\\{2}\w+)$?)(\\(\w[\w ].*))+(.csv|.CSV|.txt|.TXT|.prn|.PRN)$");
                 if (!rx.IsMatch(txtFilePath.Text))
                 {
-                    MessageBox.Show("Please enter a valid .csv file path.", "PWC Forecast");
+                    MessageBox.Show("Please enter a valid text file path.", "PWC Forecast");
                     e.Cancel = true;
                 }
             }
@@ -233,8 +233,8 @@ namespace PWC.Forecast
         {
             try
             {
-                saveFileDialog1.DefaultExt = ".csv";
-                saveFileDialog1.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+                saveFileDialog1.DefaultExt = ".txt";
+                saveFileDialog1.Filter = "Text Files (*.prn;*.txt;*.csv)|*.prn;*.txt;*.csv|All Files (*.*)|*.*";
                 FileInfo fileInfo = new FileInfo(txtFilePath.Text);
                 saveFileDialog1.InitialDirectory = fileInfo.DirectoryName;
                 saveFileDialog1.FileName = fileInfo.Name;

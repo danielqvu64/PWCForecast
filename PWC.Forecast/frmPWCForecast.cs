@@ -255,6 +255,21 @@ namespace PWC.Forecast
         #endregion
 
         #region Menus Event Handlers
+        private void forecastFromEditedForecastFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!Validate())
+                    return;
+                var frmImport = new frmImport(ImportFileType.ForecastFromEdited);
+                frmImport.ShowDialog(this);
+            }
+            catch (Exception ex)
+            {
+                Utility.GetInstance().HandleException(this, ex, e);
+            }
+        }
+
         private void posFromOracleFlatFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -805,7 +820,7 @@ namespace PWC.Forecast
                 latestPOSSalesEndDate = DateTime.Parse(savedForecastCollection[1].POSSalesEndDate);
             return latestPOSSalesEndDate;
         }
-        
+
         private void GetDefaultPOSSalesEndDate()
         {
             if (rbtnSR.Checked)
@@ -1277,38 +1292,36 @@ namespace PWC.Forecast
                             transaction.Commit();
                             break;
                         case ForecastAction.Generate:
+                            // save a copy of the genenerated collection
+                            var generatedCollection = customer.ForecastCollection;
+
+                            // delete the existing collections
+                            customer.ForecastAction = ForecastAction.Get; // do a get for delete
+                            customer.ForecastCollection.SetHeader = generatedCollection.SetHeader; // restore the version before the get
+
+                            foreach (var forecast in customer.ForecastCollection.Where(forecast => (bool)(forecast.HasComment || forecast.HasOverride)))
                             {
-                                // save a copy of the genenerated collection
-                                var generatedCollection = customer.ForecastCollection;
-
-                                // delete the existing collections
-                                customer.ForecastAction = ForecastAction.Get; // do a get for delete
-                                customer.ForecastCollection.SetHeader = generatedCollection.SetHeader; // restore the version before the get
-
-                                foreach (var forecast in customer.ForecastCollection.Where(forecast => (bool)(forecast.HasComment || forecast.HasOverride)))
-                                {
-                                    transaction.Enlist(forecast.ForecastCommentAndOverrideCollection);
-                                    forecast.ForecastCommentAndOverrideCollection.Delete();
-                                }
-
-                                transaction.Enlist(customer.ForecastCollection);
-                                customer.ForecastCollection.Delete();
-
-                                // insert the generated collection to DB
-                                generatedCollection.MarkNew();
-                                transaction.Enlist(generatedCollection);
-                                generatedCollection.Save();
-
-                                // insert the generated comment and override collection to DB
-                                foreach (var generatedForecast in generatedCollection.Where(forecast => (bool) (forecast.HasComment || forecast.HasOverride)))
-                                {
-                                    generatedForecast.ForecastCommentAndOverrideCollection.MarkNew();
-                                    transaction.Enlist(generatedForecast.ForecastCommentAndOverrideCollection);
-                                    generatedForecast.ForecastCommentAndOverrideCollection.Save();
-                                }
-
-                                transaction.Commit();
+                                transaction.Enlist(forecast.ForecastCommentAndOverrideCollection);
+                                forecast.ForecastCommentAndOverrideCollection.Delete();
                             }
+
+                            transaction.Enlist(customer.ForecastCollection);
+                            customer.ForecastCollection.Delete();
+
+                            // insert the generated collection to DB
+                            generatedCollection.MarkNew();
+                            transaction.Enlist(generatedCollection);
+                            generatedCollection.Save();
+
+                            // insert the generated comment and override collection to DB
+                            foreach (var generatedForecast in generatedCollection.Where(forecast => (bool) (forecast.HasComment || forecast.HasOverride)))
+                            {
+                                generatedForecast.ForecastCommentAndOverrideCollection.MarkNew();
+                                transaction.Enlist(generatedForecast.ForecastCommentAndOverrideCollection);
+                                generatedForecast.ForecastCommentAndOverrideCollection.Save();
+                            }
+
+                            transaction.Commit();
                             break;
                     }
                 }
@@ -1346,7 +1359,7 @@ namespace PWC.Forecast
                     return;
                 }
 
-                var osd = new OpenFileDialog { Filter = "Text files (*.txt)|*.txt" };
+                var osd = new OpenFileDialog { DefaultExt = ".txt", Filter = "Text Files (*.prn;*.txt;*.csv)|*.prn;*.txt;*.csv|All Files (*.*)|*.*" };
                 if (osd.ShowDialog() != DialogResult.OK)
                     return;
 
@@ -1440,13 +1453,22 @@ namespace PWC.Forecast
                     return;
                 }
 
-                var sfd = new SaveFileDialog { Filter = "Text files (*.txt)|*.txt" };
+                var sfd = new SaveFileDialog { DefaultExt = ".txt", Filter = "Text Files (*.prn;*.txt;*.csv)|*.prn;*.txt;*.csv|All Files (*.*)|*.*" };
                 if (sfd.ShowDialog() != DialogResult.OK)
                     return;
 
                 Cursor = Cursors.WaitCursor;
                 var customer = _company.CustomerCollection[_customerKey];
-                customer.WriteForecastToTxt(sfd.FileName);
+
+                using (var swForecast = new StreamWriter(sfd.FileName, false))
+                {
+                    using (var swForecastComment = new StreamWriter(Customer.GetForecastCommentTxtFileName(sfd.FileName), false))
+                    {
+                        Customer.WriteForecastToTxtHeaders(swForecast, swForecastComment);
+                        customer.WriteForecastToText(swForecast, swForecastComment);
+                    }
+                }
+
                 Cursor = Cursors.Arrow;
             }
             catch (Exception ex)

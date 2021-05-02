@@ -40,18 +40,12 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.btnBrowseFolder = new System.Windows.Forms.Button();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.lblSavedForecast = new System.Windows.Forms.Label();
-            this.cboSavedForecast = new System.Windows.Forms.ComboBox();
             this.bindingSourceSavedForecast = new System.Windows.Forms.BindingSource(this.components);
-            this.rbtnAllLatestCustomerForecasts = new System.Windows.Forms.RadioButton();
-            this.rbtnByDate = new System.Windows.Forms.RadioButton();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.rbtnToOracle = new System.Windows.Forms.RadioButton();
-            this.rbtnPLCrossTab = new System.Windows.Forms.RadioButton();
+            this.rbtnForEdit = new System.Windows.Forms.RadioButton();
             this.chkSubtractCurrentMonthSales = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourceSavedForecast)).BeginInit();
-            this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,8 +57,8 @@
             this.txtCompanyCode.PromptChar = ' ';
             this.txtCompanyCode.Size = new System.Drawing.Size(25, 20);
             this.txtCompanyCode.TabIndex = 2;
-            this.txtCompanyCode.Validating += new System.ComponentModel.CancelEventHandler(this.txtCompanyCode_Validating);
             this.txtCompanyCode.GotFocus += new System.EventHandler(this.txtCompanyCode_GotFocus);
+            this.txtCompanyCode.Validating += new System.ComponentModel.CancelEventHandler(this.txtCompanyCode_Validating);
             // 
             // txtCompanyName
             // 
@@ -88,7 +82,7 @@
             // 
             this.btnCancel.CausesValidation = false;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(250, 173);
+            this.btnCancel.Location = new System.Drawing.Point(250, 109);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(62, 23);
             this.btnCancel.TabIndex = 15;
@@ -98,7 +92,7 @@
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(182, 173);
+            this.btnExport.Location = new System.Drawing.Point(182, 109);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(62, 23);
             this.btnExport.TabIndex = 14;
@@ -108,7 +102,7 @@
             // 
             // txtFilePath
             // 
-            this.txtFilePath.Location = new System.Drawing.Point(69, 125);
+            this.txtFilePath.Location = new System.Drawing.Point(69, 61);
             this.txtFilePath.Name = "txtFilePath";
             this.txtFilePath.Size = new System.Drawing.Size(268, 20);
             this.txtFilePath.TabIndex = 10;
@@ -118,7 +112,7 @@
             // lblFilePath
             // 
             this.lblFilePath.AutoSize = true;
-            this.lblFilePath.Location = new System.Drawing.Point(10, 128);
+            this.lblFilePath.Location = new System.Drawing.Point(10, 64);
             this.lblFilePath.Name = "lblFilePath";
             this.lblFilePath.Size = new System.Drawing.Size(51, 13);
             this.lblFilePath.TabIndex = 9;
@@ -127,7 +121,7 @@
             // chkAppendFile
             // 
             this.chkAppendFile.AutoSize = true;
-            this.chkAppendFile.Location = new System.Drawing.Point(397, 128);
+            this.chkAppendFile.Location = new System.Drawing.Point(397, 64);
             this.chkAppendFile.Name = "chkAppendFile";
             this.chkAppendFile.Size = new System.Drawing.Size(82, 17);
             this.chkAppendFile.TabIndex = 12;
@@ -136,7 +130,7 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(13, 152);
+            this.progressBar1.Location = new System.Drawing.Point(13, 88);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(466, 15);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
@@ -147,7 +141,7 @@
             // 
             this.btnBrowseFolder.CausesValidation = false;
             this.btnBrowseFolder.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnBrowseFolder.Location = new System.Drawing.Point(343, 125);
+            this.btnBrowseFolder.Location = new System.Drawing.Point(343, 61);
             this.btnBrowseFolder.Name = "btnBrowseFolder";
             this.btnBrowseFolder.Size = new System.Drawing.Size(26, 23);
             this.btnBrowseFolder.TabIndex = 11;
@@ -155,75 +149,17 @@
             this.btnBrowseFolder.UseVisualStyleBackColor = true;
             this.btnBrowseFolder.Click += new System.EventHandler(this.btnBrowseFolder_Click);
             // 
-            // lblSavedForecast
-            // 
-            this.lblSavedForecast.AutoSize = true;
-            this.lblSavedForecast.Location = new System.Drawing.Point(279, 63);
-            this.lblSavedForecast.Name = "lblSavedForecast";
-            this.lblSavedForecast.Size = new System.Drawing.Size(90, 13);
-            this.lblSavedForecast.TabIndex = 6;
-            this.lblSavedForecast.Text = "Saved Forecasts:";
-            this.lblSavedForecast.Visible = false;
-            // 
-            // cboSavedForecast
-            // 
-            this.cboSavedForecast.DataSource = this.bindingSourceSavedForecast;
-            this.cboSavedForecast.DisplayMember = "Description";
-            this.cboSavedForecast.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboSavedForecast.FormattingEnabled = true;
-            this.cboSavedForecast.Location = new System.Drawing.Point(372, 58);
-            this.cboSavedForecast.Name = "cboSavedForecast";
-            this.cboSavedForecast.Size = new System.Drawing.Size(107, 21);
-            this.cboSavedForecast.TabIndex = 7;
-            this.cboSavedForecast.ValueMember = "POSSalesEndDate";
-            this.cboSavedForecast.Visible = false;
-            // 
             // bindingSourceSavedForecast
             // 
             this.bindingSourceSavedForecast.AllowNew = false;
             // 
-            // rbtnAllLatestCustomerForecasts
-            // 
-            this.rbtnAllLatestCustomerForecasts.AutoSize = true;
-            this.rbtnAllLatestCustomerForecasts.Checked = true;
-            this.rbtnAllLatestCustomerForecasts.Location = new System.Drawing.Point(12, 19);
-            this.rbtnAllLatestCustomerForecasts.Name = "rbtnAllLatestCustomerForecasts";
-            this.rbtnAllLatestCustomerForecasts.Size = new System.Drawing.Size(164, 17);
-            this.rbtnAllLatestCustomerForecasts.TabIndex = 1;
-            this.rbtnAllLatestCustomerForecasts.TabStop = true;
-            this.rbtnAllLatestCustomerForecasts.Text = "All Latest Customer Forecasts";
-            this.rbtnAllLatestCustomerForecasts.UseVisualStyleBackColor = true;
-            // 
-            // rbtnByDate
-            // 
-            this.rbtnByDate.AutoSize = true;
-            this.rbtnByDate.Location = new System.Drawing.Point(183, 19);
-            this.rbtnByDate.Name = "rbtnByDate";
-            this.rbtnByDate.Size = new System.Drawing.Size(63, 17);
-            this.rbtnByDate.TabIndex = 2;
-            this.rbtnByDate.TabStop = true;
-            this.rbtnByDate.Text = "By Date";
-            this.rbtnByDate.UseVisualStyleBackColor = true;
-            this.rbtnByDate.CheckedChanged += new System.EventHandler(this.rbtnByDate_CheckedChanged);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.rbtnByDate);
-            this.groupBox1.Controls.Add(this.rbtnAllLatestCustomerForecasts);
-            this.groupBox1.Location = new System.Drawing.Point(14, 43);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(251, 44);
-            this.groupBox1.TabIndex = 5;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Forecast Selection";
-            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.rbtnToOracle);
-            this.groupBox2.Controls.Add(this.rbtnPLCrossTab);
+            this.groupBox2.Controls.Add(this.rbtnForEdit);
             this.groupBox2.Location = new System.Drawing.Point(279, 10);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(200, 42);
+            this.groupBox2.Size = new System.Drawing.Size(158, 42);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Export Type Selection";
@@ -239,22 +175,22 @@
             this.rbtnToOracle.TabStop = true;
             this.rbtnToOracle.Text = "To Oracle";
             this.rbtnToOracle.UseVisualStyleBackColor = true;
+            this.rbtnToOracle.CheckedChanged += new System.EventHandler(this.rbtnToOracle_CheckedChanged);
             // 
-            // rbtnPLCrossTab
+            // rbtnForEdit
             // 
-            this.rbtnPLCrossTab.AutoSize = true;
-            this.rbtnPLCrossTab.Location = new System.Drawing.Point(93, 19);
-            this.rbtnPLCrossTab.Name = "rbtnPLCrossTab";
-            this.rbtnPLCrossTab.Size = new System.Drawing.Size(82, 17);
-            this.rbtnPLCrossTab.TabIndex = 2;
-            this.rbtnPLCrossTab.Text = "PL Crosstab";
-            this.rbtnPLCrossTab.UseVisualStyleBackColor = true;
-            this.rbtnPLCrossTab.CheckedChanged += new System.EventHandler(this.rbtnPLCrossTab_CheckedChanged);
+            this.rbtnForEdit.AutoSize = true;
+            this.rbtnForEdit.Location = new System.Drawing.Point(93, 19);
+            this.rbtnForEdit.Name = "rbtnForEdit";
+            this.rbtnForEdit.Size = new System.Drawing.Size(61, 17);
+            this.rbtnForEdit.TabIndex = 2;
+            this.rbtnForEdit.Text = "For Edit";
+            this.rbtnForEdit.UseVisualStyleBackColor = true;
             // 
             // chkSubtractCurrentMonthSales
             // 
             this.chkSubtractCurrentMonthSales.AutoSize = true;
-            this.chkSubtractCurrentMonthSales.Location = new System.Drawing.Point(14, 97);
+            this.chkSubtractCurrentMonthSales.Location = new System.Drawing.Point(12, 38);
             this.chkSubtractCurrentMonthSales.Name = "chkSubtractCurrentMonthSales";
             this.chkSubtractCurrentMonthSales.Size = new System.Drawing.Size(165, 17);
             this.chkSubtractCurrentMonthSales.TabIndex = 8;
@@ -267,12 +203,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(494, 206);
+            this.ClientSize = new System.Drawing.Size(494, 141);
             this.Controls.Add(this.chkSubtractCurrentMonthSales);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.lblSavedForecast);
-            this.Controls.Add(this.cboSavedForecast);
             this.Controls.Add(this.btnBrowseFolder);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.chkAppendFile);
@@ -288,11 +221,9 @@
             this.MinimizeBox = false;
             this.Name = "frmForecastExport";
             this.Text = "Export Forecast";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmForecastExport_FormClosing);
             this.Load += new System.EventHandler(this.frmForecastExport_Load);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmSalesRateForecastExport_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSourceSavedForecast)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -312,15 +243,10 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Button btnBrowseFolder;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.Label lblSavedForecast;
-        private System.Windows.Forms.ComboBox cboSavedForecast;
         private System.Windows.Forms.BindingSource bindingSourceSavedForecast;
-        private System.Windows.Forms.RadioButton rbtnAllLatestCustomerForecasts;
-        private System.Windows.Forms.RadioButton rbtnByDate;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.RadioButton rbtnPLCrossTab;
         private System.Windows.Forms.RadioButton rbtnToOracle;
         private System.Windows.Forms.CheckBox chkSubtractCurrentMonthSales;
+        private System.Windows.Forms.RadioButton rbtnForEdit;
     }
 }

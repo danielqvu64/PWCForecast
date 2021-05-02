@@ -7,12 +7,17 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System.Linq;
+using DVu.Library.PersistenceInterface;
+using DVu.Library.BusinessObject;
 using PWC.BusinessObject;
 
 namespace PWC.Forecast
 {
     public enum ImportFileType
-    { POSFlatOracle, POSFlatACNeilsen, POSXLSACNeilsen, POSXLSToCSVACNeilsen, ActualSalesFlat, TrendByCompanyProductGroupFlat, TrendByCompanyItemFlat, TrendByCustomerProductGroupFlat, TrendByCustomerItemFlat }
+    { ForecastFromEdited, POSFlatOracle, POSFlatACNeilsen, POSXLSACNeilsen, POSXLSToCSVACNeilsen, ActualSalesFlat, TrendByCompanyProductGroupFlat, TrendByCompanyItemFlat, TrendByCustomerProductGroupFlat, TrendByCustomerItemFlat }
 
     public partial class frmImport : Form
     {
@@ -55,12 +60,16 @@ namespace PWC.Forecast
 
                 switch (_importFileType)
                 {
+                    case ImportFileType.ForecastFromEdited:
+                        this.Text = "Forecast import from edited forecast file";
+                        txtFilePath.Text = ConfigurationManager.AppSettings["ForecastEditedFilePath"];
+                        break;
                     case ImportFileType.POSFlatOracle:
-                        this.Text = "POS Import from Oracle flat file";
+                        this.Text = "POS import from Oracle flat file";
                         txtFilePath.Text = ConfigurationManager.AppSettings["POSFlatOracleFilePath"];
                         break;
                     case ImportFileType.POSFlatACNeilsen:
-                        this.Text = "POS Import from AC Neilsen flat file";
+                        this.Text = "POS import from AC Neilsen flat file";
                         txtFilePath.Text = ConfigurationManager.AppSettings["POSFlatOracleFilePath"];
                         cboCustomer.ValueMember = "Code";
                         cboCustomer.DisplayMember = "CodeDescription";
@@ -83,31 +92,31 @@ namespace PWC.Forecast
                         }
                         break;
                     case ImportFileType.POSXLSACNeilsen:
-                        this.Text = "POS Import from AC Neilsen XLS file";
+                        this.Text = "POS import from AC Neilsen XLS file";
                         txtFilePath.Text = ConfigurationManager.AppSettings["POSXLSACNeilsenFilePath"];
                         break;
                     case ImportFileType.POSXLSToCSVACNeilsen:
-                        this.Text = "POS Import from AC Neilsen XLS to CSV file";
+                        this.Text = "POS import from AC Neilsen XLS to CSV file";
                         txtFilePath.Text = ConfigurationManager.AppSettings["POSXLSToCSVACNeilsenFilePath"];
                         break;
                     case ImportFileType.ActualSalesFlat:
-                        this.Text = "Actual Sales Import from flat file";
+                        this.Text = "Actual Sales import from flat file";
                         txtFilePath.Text = ConfigurationManager.AppSettings["ActualSalesFlatFilePath"];
                         break;
                     case ImportFileType.TrendByCompanyProductGroupFlat:
-                        this.Text = "Trend by Company Product Group Import from flat file";
+                        this.Text = "Trend by Company Product Group import from flat file";
                         txtFilePath.Text = ConfigurationManager.AppSettings["TrendByCompanyProductGroupFlatFilePath"];
                         break;
                     case ImportFileType.TrendByCompanyItemFlat:
-                        this.Text = "Trend by Company Item Import from flat file";
+                        this.Text = "Trend by Company Item import from flat file";
                         txtFilePath.Text = ConfigurationManager.AppSettings["TrendByCompanyItemFlatFilePath"];
                         break;
                     case ImportFileType.TrendByCustomerProductGroupFlat:
-                        this.Text = "Trend by Customer Product Group Import from flat file";
+                        this.Text = "Trend by Customer Product Group import from flat file";
                         txtFilePath.Text = ConfigurationManager.AppSettings["TrendByCustomerProductGroupFlatFilePath"];
                         break;
                     case ImportFileType.TrendByCustomerItemFlat:
-                        this.Text = "Trend by Customer Item Import from flat file";
+                        this.Text = "Trend by Customer Item import from flat file";
                         txtFilePath.Text = ConfigurationManager.AppSettings["TrendByCustomerItemFlatFilePath"];
                         break;
                 }
@@ -138,6 +147,7 @@ namespace PWC.Forecast
                     }
                 }
 
+                this.Cursor = Cursors.WaitCursor;
                 string messageString = string.Empty;
                 bool importError = false;
                 string dtsPackagePath = string.Empty;
@@ -148,6 +158,9 @@ namespace PWC.Forecast
                 ///FILE "C:\PWC\Import Data\POS Data Import XLS Package.dtsx" /CONNECTION DestinationConnectionOLEDB;"Data Source=(local);User ID=sa;Password=Xtra8422;Initial Catalog=PWCForecast;Provider=SQLNCLI;Auto Translate=false;" /CONNECTION SourceConnectionExcel;"Provider=Microsoft.Jet.OLEDB.4.0;""Data Source=C:\PWC\Import Data\Forecasting Reports 122907b.xls"";""Extended Properties=Excel 8.0;HDR=NO"""  /MAXCONCURRENT " -1 " /CHECKPOINTING OFF  /REPORTING EWCDI
                 switch (_importFileType)
                 {
+                    case ImportFileType.ForecastFromEdited:
+                        importError = ImportForecast(ref messageString);
+                        break;
                     case ImportFileType.POSFlatOracle:
                         dtsPackagePath = ConfigurationManager.AppSettings["POSFlatFileOracleDTSPackagePath"];
                         importError = Import(dtsPackagePath
@@ -212,6 +225,8 @@ namespace PWC.Forecast
                             , ref messageString);
                         break;
                 }
+                this.Cursor = Cursors.Arrow;
+
                 if (messageString != string.Empty)
                 {
                     MessageBox.Show(messageString, "PWC Forecast");
@@ -220,6 +235,10 @@ namespace PWC.Forecast
                 }
                 switch (_importFileType)
                 {
+                    case ImportFileType.ForecastFromEdited:
+                        if (txtFilePath.Text != ConfigurationManager.AppSettings["ForecastEditedFilePath"])
+                            Utility.GetInstance().SaveSetting("ForecastEditedFilePath", txtFilePath.Text);
+                        break;
                     case ImportFileType.POSFlatOracle:
                         if (txtFilePath.Text != ConfigurationManager.AppSettings["POSFlatOracleFilePath"])
                             Utility.GetInstance().SaveSetting("POSFlatOracleFilePath", txtFilePath.Text);
@@ -271,7 +290,7 @@ namespace PWC.Forecast
             catch (Exception ex)
             {
                 Utility.GetInstance().HandleException(this, ex, e);
-                progressBar1.Visible = false;
+                this.Cursor = Cursors.Arrow;
             }
         }
 
@@ -288,10 +307,229 @@ namespace PWC.Forecast
             }
         }
 
+        private bool ImportForecast(ref string messageString)
+        {
+            Company company = null;
+            Customer customer = null;
+            
+            // populate forecast comment from txt file
+            if (!File.Exists(txtFilePath.Text))
+            {
+                messageString = "Forecast file does not exist.";
+                return true;
+            }
+
+            var forecastCommentFileName = Customer.GetForecastCommentTxtFileName(txtFilePath.Text);
+            if (!File.Exists(forecastCommentFileName))
+            {
+                messageString = "Forecast Comment file does not exist.";
+                return true;
+            }
+
+            var forecastCommentCollection = new List<ForecastCommentAndOverride>();
+            var lineCount = 0;
+
+            // populate forecast commnent from txt file
+            using (var sr = new StreamReader(forecastCommentFileName))
+            {
+                sr.ReadLine();
+                lineCount++;
+                while (sr.Peek() >= 0)
+                {
+                    var columns = sr.ReadLine().Split('\t');
+                    lineCount++;
+                    if (columns.Length != 8)
+                    {
+                        messageString = string.Format("The number of columns in the forecast comment txt file must be 8. The error is on line {0}.", lineCount);
+                        return true;
+                    }
+                    var companyCode = columns[0].Replace("!", "");
+                    var customerNumber = columns[1];
+                    forecastCommentCollection.Add(new ForecastCommentAndOverride
+                    {
+                        CompanyCode = companyCode,
+                        CustomerNumber = customerNumber,
+                        POSSalesEndDate = Convert.ToDateTime(columns[2]),
+                        ItemNumber = columns[3],
+                        ForecastMethod = columns[4],
+                        ForecastValueKey = columns[5],
+                        CommentOverrideDateTime = Convert.ToDateTime(columns[6]),
+                        Comment = columns[7].Replace("{crlf}", Environment.NewLine)
+                    });
+                }
+            }
+
+            // populate forecast from txt file
+            using (var sr = new StreamReader(txtFilePath.Text))
+            {
+                sr.ReadLine();
+                lineCount = 1;
+                while (sr.Peek() >= 0)
+                {
+                    var columns = sr.ReadLine().Split('\t');
+                    lineCount++;
+                    if (columns.Length != 41)
+                    {
+                        messageString = string.Format("The number of columns in the forecast txt file must be 41. The error is on line {0}.", lineCount);
+                        return true;
+                    }
+                    var companyCode = columns[0].Replace("!", "");
+                    var customerNumber = columns[1];
+
+                    if (customer != null && (customer.CompanyCode != companyCode || customer.CustomerNumber != customerNumber))
+                    {
+                        if (customer.ForecastCollection != null && customer.ForecastCollection.Count > 0)
+                        {
+                            customer.ForecastCollection.SetHeader = new ForecastCollectionHeader(customer.ForecastCollection[0].CompanyCode,
+                                                                                                 customer.ForecastCollection[0].CustomerNumber,
+                                                                                                 customer.ForecastCollection[0].POSSalesEndDate);
+                            ((IPersistenceObject)customer.ForecastCollection.SetHeader).Load();
+
+                            SaveForecast(customer);
+
+                            lblProgress.Text = string.Format("Reading Forecast for Company: {0}, Customer: {1} ...", companyCode, customerNumber);
+                            Application.DoEvents();
+                        }
+                    }
+                    var posSalesEndDate = Convert.ToDateTime(columns[2]);
+
+                    if (company == null || company.CompanyCode != companyCode)
+                    {
+                        var companyCollection = new Company.ParameteredCollection(companyCode);
+                        companyCollection.Load();
+                        if (companyCollection.Count == 0)
+                        {
+                            messageString = string.Format("Invalid Company Code at line {0} in forecast txt file.", lineCount);
+                            return true;
+                        }
+                        company = companyCollection[0];
+                    }
+
+                    if (customer == null || customer.CompanyCode != companyCode || customer.CustomerNumber != customerNumber)
+                    {
+                        var customerKey = new CustomerKey(companyCode, customerNumber);
+                        customer = company.CustomerCollection[customerKey];
+                        if (customer == null)
+                        {
+                            messageString = string.Format("Invalid Customer Number at line {0} in forecast txt file.", lineCount);
+                            return true;
+                        }
+                        customer.POSSalesEndDate = posSalesEndDate;
+                        customer.ForecastAction = ForecastAction.Generate;
+                        customer.ForecastCollection = new PWC.BusinessObject.Forecast.WithCustomerParentParameteredCollection { Parent = customer };
+                    }
+
+                    var savedForecastDates = PersistenceLayer.Utility.GetInstance().GetSavedForecastDateCollection(companyCode, customerNumber, 1);
+                    if (savedForecastDates.Count == 1)
+                        continue;
+                    var latestPosSalesEndDate = DateTime.Parse(savedForecastDates[1].POSSalesEndDate);
+
+                    var calendar = Calendar.GetInstance();
+                    if (latestPosSalesEndDate > posSalesEndDate &&
+                        String.CompareOrdinal(calendar.GetYYMM(posSalesEndDate), calendar.GetYYMM(DateTime.Today)) < 0)
+                    {
+                        messageString = string.Format("Past forecast cannot be overwritten at line {0}.", lineCount);
+                        return true;
+                    }
+
+                    var forecastKey = new ForecastKey(companyCode, customerNumber, posSalesEndDate, columns[3], columns[4]);
+                    var forecast = customer.ForecastCollection.Create(forecastKey);
+                    for (var i = 5; i < 41; i++)
+                    {
+                        if (!string.IsNullOrEmpty(columns[i]))
+                        {
+                            var quantity = Math.Round(Convert.ToDecimal(columns[i]), 0);
+                            forecast.ForecastQuantityCollection[i - 5] = Convert.ToInt32(quantity);
+                        }
+                        else
+                            forecast.ForecastQuantityCollection[i - 5] = SqlInt32.Null;
+                    }
+                    var comments = forecastCommentCollection.Where(
+                        c => (c.CompanyCode == forecast.CompanyCode && c.CustomerNumber == forecast.CustomerNumber &&
+                              c.POSSalesEndDate == forecast.POSSalesEndDate && c.ItemNumber == forecast.ItemNumber &&
+                              c.ForecastMethod == forecast.ForecastMethod).Value).ToArray();
+                    if (comments.Length > 0)
+                    {
+                        forecast.HasComment = true;
+                        forecast.ForecastCommentAndOverrideCollection = new ForecastCommentAndOverride.WithForecastParentCollection(forecast);
+                        foreach (var comment in comments)
+                        {
+                            var forecastComment = forecast.ForecastCommentAndOverrideCollection.Create(new ForecastCommentAndOverrideKey
+                            {
+                                CompanyCode = forecast.CompanyCode,
+                                CustomerNumber = forecast.CustomerNumber,
+                                POSSalesEndDate = forecast.POSSalesEndDate,
+                                ItemNumber = forecast.ItemNumber,
+                                ForecastMethod = forecast.ForecastMethod,
+                                ForecastValueKey = comment.ForecastValueKey,
+                                CommentOverrideDateTime = comment.CommentOverrideDateTime,
+                            });
+                            forecastComment.Comment = comment.Comment;
+                            forecast.ForecastCommentAndOverrideCollection.Add(forecastComment);
+                        }
+                    }
+
+                    forecast.CreatedDate = DateTime.Today;
+                    customer.ForecastCollection.Add(forecast);
+                }
+            }
+
+            if (customer.ForecastCollection != null && customer.ForecastCollection.Count > 0)
+            {
+                customer.ForecastCollection.SetHeader = new ForecastCollectionHeader(customer.ForecastCollection[0].CompanyCode,
+                                                                                     customer.ForecastCollection[0].CustomerNumber,
+                                                                                     customer.ForecastCollection[0].POSSalesEndDate);
+                ((IPersistenceObject)customer.ForecastCollection.SetHeader).Load();
+
+                SaveForecast(customer);
+            }
+
+            return false;
+        }
+
+        private void SaveForecast(Customer customer)
+        {
+            lblProgress.Text = string.Format("Saving Forecast for Company: {0}, Customer: {1} ...", customer.CompanyCode, customer.CustomerNumber);
+            Application.DoEvents();
+
+            using (var transaction = new Transaction())
+            {
+                // save a copy of the genenerated collection
+                var generatedCollection = customer.ForecastCollection;
+
+                // delete the existing collections
+                customer.ForecastAction = ForecastAction.Get; // do a get for delete
+                customer.ForecastCollection.SetHeader = generatedCollection.SetHeader; // restore the version before the get
+
+                foreach (var forecast in customer.ForecastCollection.Where(forecast => (bool)(forecast.HasComment || forecast.HasOverride)))
+                {
+                    transaction.Enlist(forecast.ForecastCommentAndOverrideCollection);
+                    forecast.ForecastCommentAndOverrideCollection.Delete();
+                }
+
+                transaction.Enlist(customer.ForecastCollection);
+                customer.ForecastCollection.Delete();
+
+                // insert the generated collection to DB
+                generatedCollection.MarkNew();
+                transaction.Enlist(generatedCollection);
+                generatedCollection.Save();
+
+                // insert the generated comment and override collection to DB
+                foreach (var generatedForecast in generatedCollection.Where(forecast => (bool)(forecast.HasComment || forecast.HasOverride)))
+                {
+                    generatedForecast.ForecastCommentAndOverrideCollection.MarkNew();
+                    transaction.Enlist(generatedForecast.ForecastCommentAndOverrideCollection);
+                    generatedForecast.ForecastCommentAndOverrideCollection.Save();
+                }
+
+                transaction.Commit();
+            }
+        }
+
         private bool Import(string dtsPackagePath, string dtsArguments, string posUpdateSPName, ref string messageString)
         {
             this.Cursor = Cursors.WaitCursor;
-            progressBar1.Visible = true;
             bool importError = false;
             string DTExecPath = ConfigurationManager.AppSettings["DTExecPath"];
             System.Diagnostics.Process process = new System.Diagnostics.Process();
@@ -366,7 +604,6 @@ namespace PWC.Forecast
                 }
                 messageString = sb.ToString();
             }
-            progressBar1.Visible = false;
             this.Cursor = Cursors.Arrow;
             return importError;
         }
@@ -378,13 +615,11 @@ namespace PWC.Forecast
                 Regex rx;
                 if (_importFileType == ImportFileType.POSXLSACNeilsen)
                     rx = new System.Text.RegularExpressions.Regex(@"^(([a-zA-Z]:)|(\\{2}\w+)$?)(\\(\w[\w ].*))+(.xls|.XLS)$");
-                else if (_importFileType == ImportFileType.POSXLSToCSVACNeilsen)
-                    rx = new System.Text.RegularExpressions.Regex(@"^(([a-zA-Z]:)|(\\{2}\w+)$?)(\\(\w[\w ].*))+(.csv|.CSV)$");
                 else
-                    rx = new System.Text.RegularExpressions.Regex(@"^(([a-zA-Z]:)|(\\{2}\w+)$?)(\\(\w[\w ].*))+(.txt|.TXT)$");
+                    rx = new System.Text.RegularExpressions.Regex(@"^(([a-zA-Z]:)|(\\{2}\w+)$?)(\\(\w[\w ].*))+(.csv|.CSV|.txt|.TXT|.prn|.PRN)$");
                 if (!rx.IsMatch(txtFilePath.Text))
                 {
-                    MessageBox.Show(string.Format("Please enter a valid {0} file path.", _importFileType == ImportFileType.POSXLSACNeilsen ? ".xls" : ".txt"), "PWC Forecast");
+                    MessageBox.Show(string.Format("Please enter a valid {0} file path.", _importFileType == ImportFileType.POSXLSACNeilsen ? "Excel" : "text"), "PWC Forecast");
                     e.Cancel = true;
                 }
             }
@@ -413,17 +648,12 @@ namespace PWC.Forecast
                 if (_importFileType == ImportFileType.POSXLSACNeilsen)
                 {
                     openFileDialog1.DefaultExt = ".xls";
-                    openFileDialog1.Filter = "Excel files (*.xls)|*.xls|All files (*.*)|*.*";
-                }
-                else if (_importFileType == ImportFileType.POSXLSToCSVACNeilsen)
-                {
-                    openFileDialog1.DefaultExt = ".csv";
-                    openFileDialog1.Filter = "Csv files (*.csv)|*.csv|All files (*.*)|*.*";
+                    openFileDialog1.Filter = "Excel Files (*.xls)|*.xls|All files (*.*)|*.*";
                 }
                 else
                 {
                     openFileDialog1.DefaultExt = ".txt";
-                    openFileDialog1.Filter = "Text files (*.txt;*.csv;*.prn)|*.txt;*.csv;*.prn|All files (*.*)|*.*";
+                    openFileDialog1.Filter = "Text Files (*.prn;*.txt;*.csv)|*.prn;*.txt;*.csv|All Files (*.*)|*.*";
                 }
 
                 FileInfo fileInfo = new FileInfo(txtFilePath.Text);
