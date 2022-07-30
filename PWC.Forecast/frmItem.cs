@@ -145,11 +145,11 @@ namespace PWC.Forecast
                 {
                     if (dgvItem.Columns[e.ColumnIndex].Name == "ItemNumber")
                     {
-                        var rx = new System.Text.RegularExpressions.Regex(@"^\d{2}-\d{5}-[A-Z0-9]{2}$");
+                        var rx = new System.Text.RegularExpressions.Regex(@"^\d{2}-\d{5}-[A-Z0-9]{2}$|^\d{7}$");
                         var formattedValue = e.FormattedValue.ToString();
                         if (!rx.IsMatch(formattedValue))
                         {
-                            dgvItem.Rows[e.RowIndex].ErrorText = "Please enter Item Number in ##-#####-AA";
+                            dgvItem.Rows[e.RowIndex].ErrorText = "Please enter Item Number in ##-#####-AA or #######";
                             e.Cancel = true;
                         }
                         else
@@ -199,10 +199,10 @@ namespace PWC.Forecast
                         e.Cancel = true;
                         return;
                     }
-                    var rx = new System.Text.RegularExpressions.Regex(@"^\d{2}-\d{5}-[A-Z0-9]{2}$");
+                    var rx = new System.Text.RegularExpressions.Regex(@"^\d{2}-\d{5}-[A-Z0-9]{2}$|^\d{7}$");
                     if (!rx.IsMatch(itemNumber.Value))
                     {
-                        dgvItem.Rows[e.RowIndex].ErrorText = "Please enter Item Number in ##-#####-AA";
+                        dgvItem.Rows[e.RowIndex].ErrorText = "Please enter Item Number in ##-#####-AA or #######";
                         e.Cancel = true;
                         return;
                     }

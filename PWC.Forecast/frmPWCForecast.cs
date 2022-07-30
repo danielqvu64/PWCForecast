@@ -939,9 +939,9 @@ namespace PWC.Forecast
             {
                 if (string.IsNullOrEmpty(txtGotoItem.Text))
                     return;
-                if (!Regex.IsMatch(txtGotoItem.Text, @"^\d{2}-\d{5}-[A-Z0-9]{2}$"))
+                if (!Regex.IsMatch(txtGotoItem.Text, @"^\d{2}-\d{5}-[A-Z0-9]{2}$|^\d{7}$"))
                 {
-                    MessageBox.Show("Please enter Item Number in ##-#####-AA", "PWC Forecast");
+                    MessageBox.Show("Please enter Item Number in ##-#####-AA or #######", "PWC Forecast");
                     e.Cancel = true;
                 }
             }
@@ -4676,9 +4676,9 @@ namespace PWC.Forecast
                 var columnName = dgvForecast.Columns[e.ColumnIndex].Name;
                 if (columnName == "ItemNumberForecast")
                 {
-                    if (!Regex.IsMatch(formattedValue, @"^\d{2}-\d{5}-[A-Z0-9]{2}$"))
+                    if (!Regex.IsMatch(formattedValue, @"^\d{2}-\d{5}-[A-Z0-9]{2}$|^\d{7}$"))
                     {
-                        row.ErrorText = "Please enter Item Number in ##-#####-A#";
+                        row.ErrorText = "Please enter Item Number in ##-#####-AA or #######";
                         e.Cancel = true;
                         return;
                     }
